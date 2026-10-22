@@ -28,6 +28,9 @@ jobs:
           node --check lib/reapply.js
           node --input-type=module -e "import './lib/index.js'"
 
+      - name: Run unit tests
+        run: node --test "test/*.test.js"
+
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
