@@ -121,18 +121,27 @@ if (!ref) fail(`远端没有分支 ${BRANCH}：${REPO}`);
 
 const remoteHead = ref.object.sha;
 const remoteCommit = await api(`/repos/${REPO}/git/commits/${remoteHead}`);
-const remoteTree = await api(`/repos/${REPO}/git/trees/${remoteCommit.tree.sha}?recursive=1`);
-if (remoteTree.truncated) fail("远端 tree 太大被截断，无法安全比对");
-
-const REMOTE = new Map(
-  remoteTree.tree.filter((e) => e.type === "blob").map((e) => [e.path, { mode: e.mode, sha: e.sha }]),
-);
 
 log(`仓库   ${REPO}`);
 log(`版本   ${VERSION}（tag ${TAG}）`);
 log(`分支   ${BRANCH}`);
 log(`本地   HEAD tree = ${LOCAL_TREE}`);
 log(`远端   ${remoteHead.slice(0, 8)} tree = ${remoteCommit.tree.sha}`);
+
+// tree 哈希相同就是内容逐字节相同，不必再拉全量列表。
+// 这一步同时挡住了 GitHub 的短暂延迟：刚建好的 tree 有时还会返回旧内容，
+// 按条目比对会误报「要重传」，按 tree 哈希比对不会。
+if (remoteCommit.tree.sha === LOCAL_TREE) {
+  log(`\n✔ 内容已经一致（tree ${LOCAL_TREE}），没有需要推送的改动。`);
+  process.exit(0);
+}
+
+const remoteTree = await api(`/repos/${REPO}/git/trees/${remoteCommit.tree.sha}?recursive=1`);
+if (remoteTree.truncated) fail("远端 tree 太大被截断，无法安全比对");
+
+const REMOTE = new Map(
+  remoteTree.tree.filter((e) => e.type === "blob").map((e) => [e.path, { mode: e.mode, sha: e.sha }]),
+);
 
 // ---------- 3. 算差集 ----------
 const toWrite = [];
