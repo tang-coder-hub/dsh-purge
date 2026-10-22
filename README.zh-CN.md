@@ -6,10 +6,10 @@
 
 <p align="center"><strong>DeepSeek Harness 本机安全评测与提示词清洗插件</strong></p>
 
-<p align="center"><strong>版本 1.3.1</strong></p>
+<p align="center"><strong>版本 1.3.2</strong></p>
 
 <p align="center">
-  <a href="https://github.com/chs-1108/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/chs-1108/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
+  <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-65a30d?style=flat" alt="MIT license"></a>
   <a href="https://www.deepseek.com/harness/"><img src="https://img.shields.io/badge/dsh-0.2.x-blue" alt="DSH 0.2.x"></a>
   <img src="https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=node.js&logoColor=fff" alt="Node.js >= 18">
@@ -88,26 +88,26 @@
 
 ```sh
 # Web（官方 `dsh web`）
-dsh plugin --profile web add https://github.com/chs-1108/dsh-purge.git
+dsh plugin --profile web add https://github.com/tang-coder-hub/dsh-purge.git
 
 # 桌面（官方 EXE）
-dsh plugin --profile desktop add https://github.com/chs-1108/dsh-purge.git
+dsh plugin --profile desktop add https://github.com/tang-coder-hub/dsh-purge.git
 ```
 
 ### 方式二 —— tarball / zip
 
 ```sh
 # tarball，不需要装 git
-dsh plugin --profile web add https://github.com/chs-1108/dsh-purge/archive/refs/heads/main.tar.gz
-dsh plugin --profile desktop add https://github.com/chs-1108/dsh-purge/archive/refs/heads/main.tar.gz
+dsh plugin --profile web add https://github.com/tang-coder-hub/dsh-purge/archive/refs/heads/main.tar.gz
+dsh plugin --profile desktop add https://github.com/tang-coder-hub/dsh-purge/archive/refs/heads/main.tar.gz
 ```
 
-也可以从 [Releases](https://github.com/chs-1108/dsh-purge/releases) 下载 zip（或 **Code → Download ZIP**），再按**方式四**操作。
+也可以从 [Releases](https://github.com/tang-coder-hub/dsh-purge/releases) 下载 zip（或 **Code → Download ZIP**），再按**方式四**操作。
 
 ### 方式三 —— clone 到插件目录
 
 ```sh
-git clone https://github.com/chs-1108/dsh-purge.git "$DSH_HOME/plugins/dsh-purge"
+git clone https://github.com/tang-coder-hub/dsh-purge.git "$DSH_HOME/plugins/dsh-purge"
 ```
 
 目录名必须是 `dsh-purge`，里面要有 `package.json` 且 `"name"` 为 `dsh-purge`。要拷整棵树，别只挑几个 `.js`。

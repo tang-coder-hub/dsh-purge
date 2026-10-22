@@ -1,3 +1,19 @@
+# 1.3.2
+
+## 中文
+
+- 版本 **1.3.2**。自更新源改指自己的 fork，不再回拉上游。
+- **修复**：`lib/update.js` 的 `const REPO` 之前写死上游 `chs-1108/dsh-purge`，点「更新」会去上游拉代码，把本地改动整个覆盖掉。现在指向 `tang-coder-hub/dsh-purge`。
+- **元数据**：`package.json` 的 `repository` / `homepage` / `bugs` / `dsh.install`（tarball / zip / git）全部改指自己的 fork，插件面板里的「主页 / 反馈问题 / 重装」不再跳到上游。
+- 无逻辑改动，测试仍是 34 条。
+
+## English
+
+- Version **1.3.2**. The self-update source now points at this fork instead of pulling from upstream.
+- **Fixed**: `lib/update.js` hard-coded `const REPO = "chs-1108/dsh-purge"`, so clicking "Update" fetched upstream code and overwrote every local change. It now points at `tang-coder-hub/dsh-purge`.
+- **Metadata**: `repository` / `homepage` / `bugs` / `dsh.install` (tarball / zip / git) in `package.json` all point at this fork, so "Homepage / Issues / Reinstall" in the plugin panel no longer jump upstream.
+- No logic changes; still 34 tests.
+
 # 1.3.1
 
 ## 中文
