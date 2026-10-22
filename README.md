@@ -6,10 +6,10 @@
 
 <p align="center"><strong>DeepSeek Harness local security-eval &amp; prompt-cleaning plugin</strong></p>
 
-<p align="center"><strong>Version 1.3.1</strong></p>
+<p align="center"><strong>Version 1.3.2</strong></p>
 
 <p align="center">
-  <a href="https://github.com/chs-1108/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/chs-1108/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
+  <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-65a30d?style=flat" alt="MIT license"></a>
   <a href="https://www.deepseek.com/harness/"><img src="https://img.shields.io/badge/dsh-0.2.x-blue" alt="DSH 0.2.x"></a>
   <img src="https://img.shields.io/badge/Node.js-%3E%3D18-339933?logo=node.js&logoColor=fff" alt="Node.js >= 18">
@@ -88,26 +88,26 @@ Install from this repository straight into a profile:
 
 ```sh
 # Web (official `dsh web`)
-dsh plugin --profile web add https://github.com/chs-1108/dsh-purge.git
+dsh plugin --profile web add https://github.com/tang-coder-hub/dsh-purge.git
 
 # Desktop (official EXE)
-dsh plugin --profile desktop add https://github.com/chs-1108/dsh-purge.git
+dsh plugin --profile desktop add https://github.com/tang-coder-hub/dsh-purge.git
 ```
 
 ### Option 2 — tarball / zip
 
 ```sh
 # tarball, no git required
-dsh plugin --profile web add https://github.com/chs-1108/dsh-purge/archive/refs/heads/main.tar.gz
-dsh plugin --profile desktop add https://github.com/chs-1108/dsh-purge/archive/refs/heads/main.tar.gz
+dsh plugin --profile web add https://github.com/tang-coder-hub/dsh-purge/archive/refs/heads/main.tar.gz
+dsh plugin --profile desktop add https://github.com/tang-coder-hub/dsh-purge/archive/refs/heads/main.tar.gz
 ```
 
-Or download the zip from [Releases](https://github.com/chs-1108/dsh-purge/releases) (or **Code → Download ZIP**), then follow **Option 4**.
+Or download the zip from [Releases](https://github.com/tang-coder-hub/dsh-purge/releases) (or **Code → Download ZIP**), then follow **Option 4**.
 
 ### Option 3 — clone into the plugin directory
 
 ```sh
-git clone https://github.com/chs-1108/dsh-purge.git "$DSH_HOME/plugins/dsh-purge"
+git clone https://github.com/tang-coder-hub/dsh-purge.git "$DSH_HOME/plugins/dsh-purge"
 ```
 
 The folder must be named `dsh-purge` and contain a `package.json` whose `"name"` is `dsh-purge`. Copy the whole tree — not a handful of `.js` files.
