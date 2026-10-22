@@ -1,3 +1,31 @@
+# 1.3.1
+
+## 中文
+
+- 版本 **1.3.1**。修 #87 `HUNG_PROMPT_LF_NEEDLE` 永久 pending。
+- **根因**：`applyReplacementsToText` 的 needle 侧没过 `normalizeMarks`，而 `patchApplied` / `matchesPattern` 都过了。
+  宿主文件第一次 apply 时 `[dsh-purge]` 被迁成 `[cfg]`，之后 needle 里写旧标记的变体就永久匹配不上：
+  `patchHasRemainingWork` 认为还有活（它也归一化了），apply 却一个字节都不写 → marker 永远写不进去 → 状态永远 pending。
+- **影响面**：210 个 replacement 里 **26 个**的 needle 含旧标记，分布在 **10 个补丁**（#26 / #40 / #42 / #50 / #57 / #64 / #65 / #69 / #80 / #87）。#87 只是第一个撞上的那个。
+- **修复**：`const needle = normalizeMarks(asLf(pattern));` —— 一行。`out` 恒为归一化后的文本，所以"文件里还是旧标记"和"已经迁成 `[cfg]`"两种形态都能命中；正则分支走另一条路，不受影响。
+- **另外**：给 #87 补第 9 个变体，pattern 直接写 `[cfg]` 形态。主修复落地后它属于冗余保险——让还没升到 1.3.1 的宿主也能自愈。
+- **新增** 4 条回归用例（`test/marker-migration.test.js`）：needle 写旧标记能命中已迁移文本、归一化后幂等、无标记时不误命中、#87 端到端（真实宿主文件形态，二次 apply 字节不变、不重复注入）。全量 34 条。
+- **变异验证**：把 needle 那行还原成 `asLf(pattern)`，新单测立刻失败——测试确实能抓住这个回归。
+- **已知未修**（另开 issue）：#82 / #85 / #86 / #87 / #88 的 marker 写成 `[dsh-purge-NN]`，而 `normalizeMarks` 只替换精确的 `[dsh-purge]`，所以这些标记永不被迁移，插件名会长期留在宿主文件里。
+
+## English
+
+- Version **1.3.1**. Fixes #87 `HUNG_PROMPT_LF_NEEDLE` staying pending forever.
+- **Root cause**: the needle side of `applyReplacementsToText` did not go through `normalizeMarks`, while `patchApplied` and `matchesPattern` both did.
+  The first apply rewrites `[dsh-purge]` into `[cfg]` in the host file; after that, every variant whose needle still carries the legacy marker can never match again:
+  `patchHasRemainingWork` reports work left, the applier writes nothing, the marker is never written, the status stays pending.
+- **Blast radius**: 26 of 210 replacements carry the legacy marker in their needle, spread over 10 patches (#26 / #40 / #42 / #50 / #57 / #64 / #65 / #69 / #80 / #87). #87 is just the first one that hit it.
+- **Fix**: one line — `const needle = normalizeMarks(asLf(pattern));`. Since `out` is always the normalized text, both shapes (legacy marker still in the file, or already migrated to `[cfg]`) now match; the RegExp branch is a separate path and unaffected.
+- **Also**: a 9th variant for #87 whose pattern spells out the `[cfg]` shape. Redundant once the root fix lands — it exists so a host that has not upgraded yet can still heal itself.
+- **Added** 4 regression cases (`test/marker-migration.test.js`): legacy-marker needle matches migrated text, idempotent after normalization, no false hit without a marker, and #87 end to end (real host file shape, second apply byte-identical, no duplicate injection). 34 tests in total.
+- **Mutation check**: reverting the needle line to `asLf(pattern)` makes the new unit test fail immediately — the test really does catch this regression.
+- **Known, not fixed here** (separate issue): #82 / #85 / #86 / #87 / #88 use `[dsh-purge-NN]` markers, but `normalizeMarks` only replaces the exact `[dsh-purge]`, so those markers are never migrated and the plugin name stays in host files.
+
 # 1.3.0
 
 ## 中文
