@@ -1,3 +1,36 @@
+# 1.3.0
+
+## 中文
+
+- 版本 **1.3.0**。第一次带自动化测试的版本；同时修掉一个 Windows 专属的真 bug。
+- **修复** `lib/extract-asar.js` 的 `hostFs` 少了 `closeSync` / `readSync` / `fsyncSync` 三个 fd 级方法。
+  Windows 上 `rename` 不能覆盖一个仍打开的文件，而占位 `.bak` 的 fd 永远关不掉 →
+  `backupAll` 每次都 EPERM，**一个 `.bak` 都建不出来**。实际后果：补丁照打不误，但打错了没法回滚。
+  （POSIX 允许 rename 覆盖已打开的文件，所以这条只在 Windows 上暴露。）
+  同一处缺口还让 `isTextShim` 的 `readSync` 抛错被 try/catch 吞掉，文本 shim 全被误判成二进制。
+- **新增** `test/`：30 条 `node --test` 用例，覆盖三个场景
+  - patch 幂等：重复 apply 字节不变；`skipIfMarked` 挡住自匹配 pattern；旧标记 `[dsh-purge]` 只迁移一次；连打十次文件长度不增长。
+  - rewind 还原：宿主文件能从 `.bak` 还原（含文件被删、被写成 0 字节两种情况）；没有 `.bak` 时只 skip，绝不删原文件。对话回退的纯函数 `planRewind` / `cutSurfaceNodes` / `isRewindDerivedMessage` / `pendingInboxInserts` / `lastTurnSubagentIds` / `lastHumanUserText` 一并覆盖。
+  - 清洗全部宿主：多个宿主各自写入、各自留备份；重复宿主只洗一次；合并报告按 patch_id 去重并取最差状态；一个宿主 `pattern_not_found` 不拖累另一个；`revertAllHosts` 能整体回滚。
+- **测试沙箱**：测试内把 `DSH_HOME` 指到临时目录；给 `applyPatchesAllHosts` / `revertAllHosts` 新增 `options.bases` 注入点（显式给出宿主根时跳过真实发现），另有 `options.silenceFlash === false` 可跳过 `silenceCmdFlash` —— 后者会删本机的 `DSH Doctor Supervisor` 计划任务，测试里必须绕开。
+- **CI**：新增 `.github/workflows/ci.yml`，ubuntu + windows 双矩阵跑语法检查与单测；发版工作流也加了单测步骤，单测不过就不发版。
+- **新增** `npm test` 脚本。
+
+## English
+
+- Version **1.3.0**. The first release that ships with an automated test suite, and it also fixes a real Windows-only bug.
+- **Fixed** `lib/extract-asar.js`: `hostFs` was missing the three fd-level methods `closeSync` / `readSync` / `fsyncSync`.
+  On Windows a `rename` cannot replace a file that is still open, and the placeholder `.bak`'s fd was never closed → `backupAll` always failed with EPERM and **no `.bak` was ever created**. Practical effect: patches applied fine, but a bad patch could not be rolled back.
+  (POSIX allows renaming over an open file, so this only showed up on Windows.)
+  The same gap also made `isTextShim`'s `readSync` throw into a swallowed catch, so text shims were misdetected as binary.
+- **Added** `test/`: 30 `node --test` cases covering three scenarios
+  - patch idempotency: repeated applies leave the bytes unchanged; `skipIfMarked` blocks a self-matching pattern; the legacy `[dsh-purge]` marker migrates exactly once; ten consecutive applies do not grow the file.
+  - rewind / restore: host files restore from their `.bak`, including when the file was deleted or written as 0 bytes; with no `.bak` the file is skipped and never deleted. The pure functions of the conversation rewind — `planRewind`, `cutSurfaceNodes`, `isRewindDerivedMessage`, `pendingInboxInserts`, `lastTurnSubagentIds`, `lastHumanUserText` — are covered too.
+  - clean every host: each host gets its own write and its own backup; a duplicated host is cleaned once; merged reports are de-duplicated per `patch_id` and keep the worst status; one host reporting `pattern_not_found` does not hold back another; `revertAllHosts` rolls everything back.
+- **Test sandbox**: the suite points `DSH_HOME` at a temp directory. `applyPatchesAllHosts` / `revertAllHosts` gained an `options.bases` injection point (explicit host roots skip real discovery), and `options.silenceFlash === false` skips `silenceCmdFlash`, which otherwise deletes the local `DSH Doctor Supervisor` scheduled task.
+- **CI**: new `.github/workflows/ci.yml` runs the syntax check and the unit tests on both ubuntu and windows; the release workflow runs the unit tests too, so a failing suite blocks the release.
+- **Added** an `npm test` script.
+
 # 1.2.3
 
 ## 中文

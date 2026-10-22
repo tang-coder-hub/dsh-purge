@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness 本机安全评测与提示词清洗插件</strong></p>
 
-<p align="center"><strong>版本 1.2.3</strong></p>
+<p align="center"><strong>版本 1.3.0</strong></p>
 
 <p align="center">
   <a href="https://github.com/chs-1108/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/chs-1108/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
@@ -436,6 +436,9 @@ dsh-purge/
 ## 开发
 
 ```sh
+# 单元测试：patch 幂等 / rewind 还原 / 清洗全部宿主
+npm test
+
 # 逐个入口做语法检查
 node --check lib/index.js
 node --check lib/core.js

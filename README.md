@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness local security-eval &amp; prompt-cleaning plugin</strong></p>
 
-<p align="center"><strong>Version 1.2.3</strong></p>
+<p align="center"><strong>Version 1.3.0</strong></p>
 
 <p align="center">
   <a href="https://github.com/chs-1108/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/chs-1108/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
@@ -436,6 +436,9 @@ dsh-purge/
 ## Development
 
 ```sh
+# unit tests: patch idempotency / rewind restore / clean every host
+npm test
+
 # syntax check every entry
 node --check lib/index.js
 node --check lib/core.js
