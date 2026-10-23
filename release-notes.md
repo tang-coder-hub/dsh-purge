@@ -1,3 +1,27 @@
+# 1.3.5
+
+## 中文
+
+- 版本 **1.3.5**。删掉「测试版」通道，以后只有正式版一条道。
+- **通道表只剩正式版**：`CHANNELS` 去掉 beta 项，`normalizeChannel()` 一律折回正式版（旧状态文件里写着 `beta`，读的时候就会被纠正并回写）。`beta` 不再是合法的更新目标。
+- **不再探测 beta 分支**：`listRemoteVersions()` 只拉 `main` 和标签列表，少一次远端请求。`hasBeta` / `betaSha` / `lanes.beta` 三个字段一并移除。
+- **预发布标签照旧隐藏**：`beta` / `rc` / `pre` / `preview` / `test` 这类标签仍然不进版本列表，只是不再有对应的通道。
+- **面板**：`正式版 / 测试版` 两行收敛成一行，「切换到正式版」「还没有测试版」这些文案与判断一起删掉。
+- **标签间距（两轮）**：版本行首列 `76px` → `106px`，`正式版` 与 `当前` 胶囊之间留出 `9px`，胶囊不再压住下拉框；随后把清理面板与演练台的胶囊、图例、表头、工具栏整体放宽一档（`gap` 5→7、`padding` 1px→2px、表头 `7px 8px 7px 0`），文字不再贴边。
+- **下拉去重**：当前版本的选项文案不再重复「· 当前」（左边胶囊已经说过一次），只保留「· 最新」。
+- 新增 6 条回归测试（共 40 条），锁住「通道只有一个」「旧状态会自动折回」这两件事。
+
+## English
+
+- Version **1.3.5**. The `beta` channel is gone; stable is the only lane.
+- **One channel**: `CHANNELS` drops the beta entry and `normalizeChannel()` always folds back to stable (an old state file saying `beta` is corrected on read and rewritten).
+- **No beta probing**: `listRemoteVersions()` only reads `main` and the tag list. The `hasBeta` / `betaSha` / `lanes.beta` fields are removed.
+- **Prerelease tags still hidden**: `beta` / `rc` / `pre` / `preview` / `test` tags stay out of the version list; they just no longer have a lane.
+- **Panel**: the two `Stable / Beta` rows collapse into one, along with the "switch to stable" / "no beta yet" copy and checks.
+- **Label spacing (two rounds)**: the version row's first column goes `76px` → `106px` with `9px` between `Stable` and the `current` pill, so the pill no longer overlaps the select; then pills, legends, table headers and toolbars across both the purge panel and the red-team dock get one step more breathing room (`gap` 5→7, `padding` 1px→2px, header padding `7px 8px 7px 0`).
+- **No duplicate "current"**: the selected version's option no longer repeats `· current` (the pill already says it); only `· latest` stays.
+- 6 new regression tests (40 total) pin down "one channel only" and "old state folds back".
+
 # 1.3.4
 
 ## 中文
