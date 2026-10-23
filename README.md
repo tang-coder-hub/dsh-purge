@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness local security-eval &amp; prompt-cleaning plugin</strong></p>
 
-<p align="center"><strong>Version 1.3.5</strong></p>
+<p align="center"><strong>Version 1.3.6</strong></p>
 
 <p align="center">
   <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
@@ -237,6 +237,8 @@ dsh-purge --help
 | `purge_status` | Read patch state, `DSH_HOME`, injection source |
 | `purge_apply` | Apply all patches |
 | `purge_revert` | Restore originals |
+| `purge_diag` | Read-only diagnosis: why a patch is stuck, what each backup is, asar verdict, snapshots |
+| `purge_restore` | List update snapshots, or roll the plugin back to one |
 
 ### Where things live in the dock
 

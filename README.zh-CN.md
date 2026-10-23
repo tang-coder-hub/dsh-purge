@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness 本机安全评测与提示词清洗插件</strong></p>
 
-<p align="center"><strong>版本 1.3.5</strong></p>
+<p align="center"><strong>版本 1.3.6</strong></p>
 
 <p align="center">
   <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
@@ -237,6 +237,8 @@ dsh-purge --help
 | `purge_status` | 读补丁状态、`DSH_HOME`、注入来源 |
 | `purge_apply` | 应用全部补丁 |
 | `purge_revert` | 还原原件 |
+| `purge_diag` | 只读诊断：补丁为什么卡住、每份备份是什么、asar 结论、快照列表 |
+| `purge_restore` | 列出升级快照，或把插件整体回滚到某一份 |
 
 ### 面板各区域
 
