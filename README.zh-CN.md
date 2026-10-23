@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness 本机安全评测与提示词清洗插件</strong></p>
 
-<p align="center"><strong>版本 1.3.3</strong></p>
+<p align="center"><strong>版本 1.3.4</strong></p>
 
 <p align="center">
   <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
