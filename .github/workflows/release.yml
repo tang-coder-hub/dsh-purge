@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   release:
-    if: github.repository == 'chs-1108/dsh-purge'
+    if: github.repository == 'tang-coder-hub/dsh-purge'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,4 +62,4 @@ jobs:
           fi
           test -s "$zip"
           gh release upload "$tag" "$zip" --clobber
-          echo "published https://github.com/chs-1108/dsh-purge/releases/tag/${tag}"
+          echo "published https://github.com/tang-coder-hub/dsh-purge/releases/tag/${tag}"
