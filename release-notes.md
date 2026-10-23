@@ -1,3 +1,27 @@
+# 1.3.6
+
+## 中文
+
+- 版本 **1.3.6**。升级前先拍快照，升级失败自动回滚。
+- **自更新不再裸奔**：`_applyUpdateImpl` 在覆盖 `lib/docs/bin` 之前，先用 `lib/snapshot.js` 把整个插件载荷复制到 `$DSH_HOME/dsh-purge/snapshots/<时间戳>/`（含 `manifest.json`：版本、原因、文件数、字节数、原路径）。覆盖中途失败或断电，旧的 `lib` 不会只剩一半。
+- **失败自动回滚**：`overlayFromZip()` 或 `pinInstalledSpec()` 抛错时，按逆序把每个目标目录从快照搬回去，然后抛 `ROLLED_BACK`（信息里带快照号）；回滚本身失败抛 `ROLLBACK_FAILED` 并列出失败项。快照都建不出来时，直接 `SNAPSHOT_FAILED` 取消升级，绝不动手。
+- **只留最近 3 份**：升级成功后 `pruneSnapshots(3)`，磁盘不会被历史快照撑爆。
+- **新工具 `purge_diag`**：只读诊断。逐条补丁给出为什么是这个状态（surfaces 不匹配 / 已应用 / optional 跳过 / 缺哪个目标文件 / 哪个 replacement 的 needle 没命中、首行还在不在），再报每份 `.dshpurge.bak` 与正式文件是否相同、shim 三态、asar 结论、最近快照。跑完不改任何文件（有测试守着）。
+- **新工具 `purge_restore`**：不带参数只列快照；带 `stamp` 就把插件整体回滚到那一份（先删后拷，overlay 新增的孤儿文件不会残留）。
+- **app.asar 警告不再误报**：命中不了补丁痕迹时直接标绿说「没有任何补丁痕迹，是纯净原件，这条警告可以忽略」，不再每次都提示要再重启一次。判定带缓存（按 `路径|size|mtime`），流式分块扫描，不把 180MB 归档读进内存。
+- 新增 22 条测试（共 62 条）：快照 12 条 + 诊断 10 条。
+
+## English
+
+- Version **1.3.6**. Snapshots before an update, automatic rollback when it fails.
+- **Self-update is guarded now**: `_applyUpdateImpl` copies the whole plugin payload into `$DSH_HOME/dsh-purge/snapshots/<stamp>/` (with a `manifest.json` holding version, reason, file count, bytes and the original root) before overlaying `lib/docs/bin`. A failed or interrupted overlay can no longer leave a half-empty `lib`.
+- **Automatic rollback**: when `overlayFromZip()` or `pinInstalledSpec()` throws, every target directory is restored from its snapshot in reverse order and `ROLLED_BACK` is raised with the stamp; a failing restore raises `ROLLBACK_FAILED` listing what failed. If snapshots cannot be created at all, `SNAPSHOT_FAILED` cancels the update before anything is touched.
+- **Only the last 3 snapshots are kept**: `pruneSnapshots(3)` after a successful update.
+- **New tool `purge_diag`**: read-only diagnosis. For each patch it explains the status (surfaces mismatch / already applied / optional skip / which target file is missing / which replacement needle missed and whether its first line is still there), then reports whether each `.dshpurge.bak` still equals the live file, the three shim states, the asar verdict and recent snapshots. It writes nothing (covered by a test).
+- **New tool `purge_restore`**: list snapshots without arguments, or roll the whole plugin back to one with `stamp` (delete-then-copy, so files added by the overlay do not linger).
+- **No more false app.asar warning**: when no patch trace is found the line goes green and says the archive is a pristine original that can be ignored. The verdict is cached by `path|size|mtime` and scanned in chunks, so the 180MB archive is never read into memory.
+- 22 new tests (62 total): 12 for snapshots, 10 for diagnosis.
+
 # 1.3.5
 
 ## 中文
