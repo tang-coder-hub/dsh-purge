@@ -1,3 +1,21 @@
+# 1.3.3
+
+## 中文
+
+- 版本 **1.3.3**。三处"地址还指着上游仓库"的收尾，无逻辑改动。
+- **欢迎窗**：`client.js` 首次安装欢迎窗里展示的源码仓库地址（中英各一处），从 `chs-1108/dsh-purge` 改成 `tang-coder-hub/dsh-purge`。
+- **红队面板**：`lib/redteam/ui.js` 的 `githubRepoOf()` 兜底返回值改成本仓库——正常路径是从 `package.json` 的 homepage 解析，只有解析失败时才用到它。
+- **CI**：`.github/workflows/release.yml` 的 `github.repository` 判断与末尾 echo 的 Release 链接改成本仓库，fork 上发版时 Release 流程才跑得起来。
+- 测试仍是 34 条。
+
+## English
+
+- Version **1.3.3**. Three "still pointing at upstream" leftovers; no logic changes.
+- **Welcome dialog**: the repository URL shown on first install in `client.js` (zh + en) now points at `tang-coder-hub/dsh-purge`.
+- **Red team panel**: the `githubRepoOf()` fallback in `lib/redteam/ui.js` now returns this repo — the normal path parses `package.json`'s homepage, so this only matters when that fails.
+- **CI**: `.github/workflows/release.yml`'s `github.repository` guard and the final echo'd Release URL now target this repo, so releases work from the fork.
+- Still 34 tests.
+
 # 1.3.2
 
 ## 中文
