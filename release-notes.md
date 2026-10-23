@@ -1,3 +1,25 @@
+# 1.3.7
+
+## 中文
+
+- 版本 **1.3.7**。修掉面板顶部「清洗 / 演练台」两个标签在切换到演练台后又贴到一起的问题。
+- **根因是样式表的生命周期，不是间距值**：`PURGE_CSS` 有两份副本 —— `SettingsRoot` 里那份内联 `<style>`，和 `document.head` 里 `style[data-dsh-purge-ui]` 那份。切到演练台时 `SettingsRoot` 被 React 卸载，内联那份跟着消失，只剩 head 那份；而 head 那份**只在标签不存在时才写入内容**，热更新之后它一直是旧 CSS（`padding:0 0 8px`、`gap:2px`），于是间距退回贴死状态。
+- **修法一：head 那份每次同步。** 标记从 `data-dsh-purge-ui="1"` 升到 `"2"`，启动时清掉遗留的 `"1"`，内容不等就重写 —— 不会再出现「内存里是旧样式表」。
+- **修法二：样式跟着面板走。** `PurgeDock` 是常量挂载的（不随 tab 卸载），在它的渲染树里直接放一份 `PURGE_CSS`（`data-dsh-purge-dock-css`），从此不依赖任何组件挂载顺序。
+- 间距本身也定了：`.dshp-dock-tab` 左右 `14px`、容器 `gap:8px`、首个标签 `padding-left:0`（文字间距 36px，与下方演练台那排一致）。
+- 用浏览器实测过：同一套 DOM，切走内联样式表后 `padding` 从 `0 14px 8px` 掉回 `0 0 8px`、两个标签宽度从 44/71 缩成 30/43 —— 与报告的现象完全对上；同时确认演练台自身的 CSS 对这两个标签没有任何影响。
+- 新增 3 条回归测试（共 65 条）：盯住「dock 自带样式表」「head 那份每次同步」「间距值与实现对得上」三条不变量 —— 这类问题在清洗页看不出来，只能靠断言守。
+
+## English
+
+- Version **1.3.7**. Fixes the Clean / Drill tabs collapsing together again after switching to the Drill page.
+- **The cause was stylesheet lifetime, not spacing values**: `PURGE_CSS` exists twice — inline `<style>` inside `SettingsRoot`, and `style[data-dsh-purge-ui]` in `document.head`. Switching to Drill unmounts `SettingsRoot`, so the inline copy disappears and only the head copy remains; that copy **only wrote its content when the tag did not exist yet**, so after a hot reload it kept serving the old CSS (`padding:0 0 8px`, `gap:2px`) and the tabs snapped back together.
+- **Fix 1: keep the head copy in sync.** The marker moves from `data-dsh-purge-ui="1"` to `"2"`, leftovers with `"1"` are removed, and the content is rewritten whenever it differs.
+- **Fix 2: let the dock own its styles.** `PurgeDock` mounts permanently (it is not unmounted on tab switch), so it now renders its own copy of `PURGE_CSS` (`data-dsh-purge-dock-css`), independent of any other component's lifecycle.
+- Spacing is pinned as well: `.dshp-dock-tab` pads 14px horizontally, container `gap:8px`, first tab `padding-left:0` (36px between labels, matching the drill tab row below).
+- Measured in a real browser: with the same DOM, dropping the inline sheet makes `padding` fall from `0 14px 8px` to `0 0 8px` and shrinks the two tabs from 44/71 to 30/43 — exactly the reported symptom. Also confirmed the drill page's own CSS has no effect on these two tabs.
+- 3 new regression tests (65 total) pinning three invariants: the dock ships its own stylesheet, the head copy stays in sync, and the spacing values match what is implemented.
+
 # 1.3.6
 
 ## 中文

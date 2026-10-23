@@ -987,7 +987,7 @@ body[data-ds-dark-theme] .dshp-restart-card .dshp-btn-primary,body[data-ds-dark-
 .dshp-dock-head:active{cursor:grabbing}
 .dshp-dock-head b{font-size:13.5px;font-weight:650;color:inherit;letter-spacing:-.005em}
 .dshp-dock-head button{cursor:pointer;color:inherit;background:transparent;border:1px solid color-mix(in srgb,var(--dsw-alias-border-l1,#c8c2b6) 60%,transparent);border-radius:3px}
-.dshp-dock-tabs{display:flex;gap:2px;padding:0 12px;border-bottom:1px solid color-mix(in srgb,var(--dsw-alias-border-l1,#c8c2b6) 70%,transparent);background:transparent}
+.dshp-dock-tabs{display:flex;gap:8px;padding:0 12px;border-bottom:1px solid color-mix(in srgb,var(--dsw-alias-border-l1,#c8c2b6) 70%,transparent);background:transparent}
 .dshp-dock-tab{appearance:none;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--dsw-alias-label-secondary,#5c564c);border-radius:0;padding:9px 13px 7px;margin-bottom:-1px;cursor:pointer;font:12.5px/1.2 inherit}
 .dshp-dock-tab:hover{color:var(--dsw-alias-label-primary,#1a1916)}
 .dshp-dock-tab.on{color:var(--dsw-alias-label-primary,#1a1916);font-weight:650;border-bottom-color:var(--dshp-accent,#b4762a);background:transparent}
@@ -1073,7 +1073,8 @@ body:not([data-ds-dark-theme]) .dshp-auth-ops button.primary{background:var(--ds
 .dshp-dock{font-family:"Segoe UI","Microsoft YaHei UI","PingFang SC","Noto Sans SC",system-ui,sans-serif;font-size:13.5px;line-height:1.6;font-weight:500;-webkit-font-smoothing:antialiased;text-shadow:none}
 .dshp-dock{border-radius:0}
 .dshp-dock-head{border-bottom:1px solid var(--dshp-line)}
-.dshp-dock-tab{border-radius:0;border-bottom:2px solid transparent;font-family:var(--dshp-sans);font-size:13px;font-weight:550;padding:0 0 8px;min-height:28px}
+.dshp-dock-tab{border-radius:0;border-bottom:2px solid transparent;font-family:var(--dshp-sans);font-size:13px;font-weight:550;padding:0 14px 8px;min-height:28px}
+.dshp-dock-tab:first-child{padding-left:0}
 .dshp-dock-tab.on{border-bottom-color:var(--dshp-accent);color:var(--dshp-ink)}
 .dshp-dock-body{background:var(--dshp-paper)}
 .dshp-dock[data-theme="white"],.dshp-dock[data-theme="dusk"]{background:color-mix(in srgb,var(--dsw-alias-bg-layer-1,#f7f4ee) 94%,transparent)!important;backdrop-filter:blur(18px) saturate(1.15)!important;-webkit-backdrop-filter:blur(18px) saturate(1.15)!important;color:var(--dshp-ink)!important;border:1px solid color-mix(in srgb,var(--dsw-alias-border-l1,#c8c2b6) 85%,transparent)!important;box-shadow:0 14px 40px color-mix(in srgb,#000 20%,transparent)!important}
@@ -1081,7 +1082,8 @@ body:not([data-ds-dark-theme]) .dshp-auth-ops button.primary{background:var(--ds
 .dshp-dock[data-theme="white"]{--dshp-ink:var(--dsw-alias-label-primary,#16140f);--dshp-mute:color-mix(in srgb,var(--dsw-alias-label-primary,#16140f) 72%,var(--dsw-alias-label-secondary,#3c362e))}
 .dshp-dock .dshp-dock-head,.dshp-dock .dshp-dock-tabs{background:transparent!important;color:var(--dshp-ink)!important}
 .dshp-dock .dshp-dock-head,.dshp-dock .dshp-dock-head b,.dshp-dock .dshp-dock-head button,.dshp-dock .dshp-dock-tab,.dshp-dock .dshp-dock-tab.on{color:var(--dshp-ink)!important;text-shadow:none!important;font-weight:600}
-.dshp-dock .dshp-dock-tab{font-size:12.5px}
+.dshp-dock .dshp-dock-tab{font-size:12.5px;padding:0 14px 8px}
+.dshp-dock .dshp-dock-tab:first-child{padding-left:0}
 .dshp-dock .dshp-dock-tab.on{border-bottom-color:var(--dshp-accent,#b4762a)!important}
 .dshp-dock-body .rt-dock{font-size:13.5px!important;line-height:1.6!important;font-weight:500!important;color:var(--dshp-ink)!important;--rt-ink:var(--dshp-ink);--rt-mute:var(--dshp-mute);--rt-surf:color-mix(in srgb,var(--dshp-ink) 5%,transparent);--rt-surf-2:color-mix(in srgb,var(--dshp-ink) 9%,transparent);--rt-line:color-mix(in srgb,var(--dshp-ink) 16%,transparent)}
 .dshp-dock-body .rt-title,.dshp-dock-body .rt-tab,.dshp-dock-body .rt-tab.on,.dshp-dock-body .rt-card,.dshp-dock-body .rt-card h4,.dshp-dock-body .rt-row,.dshp-dock-body .rt-vrow,.dshp-dock-body .rt-kv,.dshp-dock-body .rt-kv b,.dshp-dock-body .rt-kv span,.dshp-dock-body .rt-mono,.dshp-dock-body .rt-empty,.dshp-dock-body .rt-foot,.dshp-dock-body .rt-tag,.dshp-dock-body .rt-item,.dshp-dock-body .rt-item-name,.dshp-dock-body .rt-item-desc,.dshp-dock-body .rt-sec-sub,.dshp-dock-body .rt-kb-sub,.dshp-dock-body .rt-seg-cidr,.dshp-dock-body .rt-seg-meta,.dshp-dock-body .rt-section,.dshp-dock-body .rt-note,.dshp-dock-body .rt-hint{color:var(--dshp-ink)!important;text-shadow:none!important;opacity:1!important}
@@ -8385,13 +8387,18 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 				return () => { obs.disconnect(); window.clearInterval(timer); };
 			}, []);
 			useEffect(() => {
-				let uiTag = document.querySelector('style[data-dsh-purge-ui="1"]');
+				// 这一份是面板真正依赖的样式表：SettingsRoot 里那份内联 <style> 只在
+				// 「清洗」页存在，切到「演练台」时会被 React 卸载，届时只剩这一份。
+				// 所以内容必须每次同步 —— 只在标签不存在时才写，会让热更新后一直用旧 CSS
+				// （现象：清洗页间距正常，一切到演练台两个 tab 又贴在一起）。
+				for (const stale of document.querySelectorAll('style[data-dsh-purge-ui="1"]')) stale.remove();
+				let uiTag = document.querySelector('style[data-dsh-purge-ui="2"]');
 				if (!uiTag) {
 					uiTag = document.createElement("style");
-					uiTag.setAttribute("data-dsh-purge-ui", "1");
-					uiTag.textContent = PURGE_CSS;
+					uiTag.setAttribute("data-dsh-purge-ui", "2");
 					document.head.append(uiTag);
 				}
+				if (uiTag.textContent !== PURGE_CSS) uiTag.textContent = PURGE_CSS;
 				if (!__dshPurgeDrill || !__dshPurgeDrill.CSS) return undefined;
 				const styleTag = document.createElement("style");
 				styleTag.setAttribute("data-dsh-purge-drill", "1");
@@ -8518,6 +8525,10 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 					height: geom.h + "px",
 				},
 			},
+				// PURGE_CSS 必须跟着 dock 一起渲染：清洗页有 SettingsRoot 自带的内联 <style>，
+				// 但切到演练台时那个组件被卸载，样式就会退回 head 里那份可能过期的副本
+				// （现象：清洗页两个 tab 间距正常，一切到演练台又贴在一起）。
+				h("style", { "data-dsh-purge-dock-css": "1" }, PURGE_CSS),
 				h("div", { className: "dshp-dock-head", onMouseDown: startDrag, title: "按住拖动面板" },
 					h("b", null, "dsh-purge"),
 					h("span", { style: { flex: 1 } }),
