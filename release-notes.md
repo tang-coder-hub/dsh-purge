@@ -1,3 +1,24 @@
+# 1.3.4
+
+## 中文
+
+- 版本 **1.3.4**。界面改版：`清理` 面板换成「仪器台」样式，`红队演练台` 同步收口。逻辑、接口、存储全部未改。
+- **补丁账本**：原来那根 3px 进度条换成 68 格色块账本，一格一条补丁（绿=已应用、灰=跳过、琥珀描边=待处理），下面配套图例。数字和顺序都由 `patchRowsOf()` 现有数据算出，不新增任何接口。
+- **状态条**：三张圆角卡片合并成一条通栏，补丁数 / shim / 备份三段用竖线分隔，省掉卡片留白。
+- **版本行对齐**：`本机` 与 `正式版`/`测试版` 改用同一套 `76px` 首列网格，`当前` 胶囊不再压住下拉框（1.3.3 之前首列写死 56px 导致溢出）。
+- **配色不再跟随宿主品牌色**：主色钉死琥珀（`#b4762a`，深色主题 `#e0a458`）。此前主色直接引用 `--dsw-alias-brand-primary`，宿主品牌色一变，整个面板就跟着变。
+- **演练台**：内部 27 处品牌色改走 `--rt-accent`、去掉 3 处毛玻璃、圆角收敛（容器 0、标签 2px）、去掉重投影，与清理面板同一套语言。
+- **入口收敛**：去掉右下角常驻悬浮按钮，只保留输入框旁那一个入口。
+
+## English
+
+- Version **1.3.4**. UI redesign: the `Purge` panel gets an "instrument panel" look; the red-team dock is brought in line. No logic, API, or storage changes.
+- **Patch ledger**: the old 3px progress bar becomes a 68-cell ledger, one cell per patch (green = applied, grey = skipped, amber outline = pending), with a legend underneath. Numbers come from the existing `patchRowsOf()` data; no new endpoints.
+- **Status strip**: three rounded cards collapse into one full-width strip with vertical dividers for patches / shims / backup.
+- **Version row alignment**: `Local` and `Stable`/`Beta` now share the same `76px` first column, so the `current` pill no longer overlaps the select (the column was hard-coded to 56px before 1.3.3).
+- **Accent no longer inherits the host brand colour**: pinned to amber (`#b4762a`, dark theme `#e0a458`). It previously referenced `--dsw-alias-brand-primary`, so a host theme change repainted the whole panel.
+- **Red-team dock**: 27 brand-colour references moved to `--rt-accent`, 3 backdrop blurs removed, radii tightened (0 for containers, 2px for tags), heavy shadows dropped.
+- **One entry point**: the always-on floating launcher in the bottom-right corner is gone; only the composer-side entry remains.
 # 1.3.3
 
 ## 中文
