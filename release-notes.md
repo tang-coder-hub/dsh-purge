@@ -1,3 +1,27 @@
+# 1.3.8
+
+## 中文
+
+- 版本 **1.3.8**。启动时自动重打补丁改为**默认开启**（`autoApplyOnStart` 由 `false` 改为 `true`），DSH 官方升级后不用再手动点「应用」。
+- **每次写宿主之前先拍一份整包快照**（新增 `lib/host-snapshot.js`）：62 个宿主文件 / 约 2.5 MB，存在 `$DSH_HOME/dsh-purge/host-snapshots/`，默认留 3 份。写之前先备份，是因为 `.dshpurge.bak` 逐个文件、且 `revertAll()` 还原后会把它删掉，顶不上「一键回滚」。
+- **快照拍不出来就不写**：拍失败就整轮放弃这一次的宿主写入，宁可这轮不打，也不要打一半没法退。
+- **打一半炸了自动搬回去**：`applyPatches` 抛错时用刚拍的快照把宿主退回原样，失败原因与快照号一起返回。
+- `reapplyInstalled` 在 `revertAll` 之前也拍一份（revert 同样是写宿主，拿 `.dshpurge.bak` 覆盖当前文件），`reason` 为 `pre-revert` / `pre-revert-upgrade`。
+- **`purge_restore` 支持 `scope: "host"`**：不带 `stamp` 列出两类快照清单，带 `stamp` + `scope: "host"` 把宿主文件搬回去（只覆盖不删除，绝不 rm 整个安装目录）。
+- 新增 5 条回归测试（共 70 条）：快照落在 DSH_HOME、清单倒排、只覆盖不删、找不到快照给人话错误、只留 3 份。
+- 实测：本机真实宿主跑一轮 `applyPatchesAllHosts` → 快照 62 文件 / 2,580,098 字节落地，宿主 62 个文件哈希一字未变（补丁本来就在），`purge_restore` 清单可列；故意写坏 `dsh-agent-loop/lib/index.js` 再用快照还原 → 字节完全回到原样（72,719 字节，sha256 一致），宿主补丁仍是 67 applied / 0 pending。
+
+## English
+
+- Version **1.3.8**. Boot-time patch reapply is now **on by default** (`autoApplyOnStart` flipped from `false` to `true`), so a DSH upgrade no longer needs a manual "Apply".
+- **A full host snapshot is taken before every write** (new `lib/host-snapshot.js`): 62 host files / about 2.5 MB under `$DSH_HOME/dsh-purge/host-snapshots/`, keeping 3. It exists because `.dshpurge.bak` is per-file and `revertAll()` deletes it after restoring, so it cannot serve as a one-click rollback.
+- **No snapshot, no write**: if the snapshot cannot be created, that host is skipped rather than patched without a way back.
+- **Automatic rollback on failure**: if `applyPatches` throws, the fresh snapshot is restored and the error plus snapshot id are returned.
+- `reapplyInstalled` also snapshots before `revertAll` (revert writes host files too), with reason `pre-revert` / `pre-revert-upgrade`.
+- **`purge_restore` gained `scope: "host"`**: without `stamp` it lists both snapshot kinds; with `stamp` and `scope: "host"` it restores host files (overwrite only, never an rm of the install directory).
+- 5 new regression tests (70 total).
+- Measured on the real host: one `applyPatchesAllHosts` run wrote a 62-file / 2,580,098-byte snapshot, all 62 host file hashes unchanged (already patched), and the restore list works; deliberately corrupting `dsh-agent-loop/lib/index.js` and restoring returned it byte-for-byte (72,719 bytes, same sha256), host still 67 applied / 0 pending.
+
 # 1.3.7
 
 ## 中文

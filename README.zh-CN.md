@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness 本机安全评测与提示词清洗插件</strong></p>
 
-<p align="center"><strong>版本 1.3.7</strong></p>
+<p align="center"><strong>版本 1.3.8</strong></p>
 
 <p align="center">
   <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
@@ -266,7 +266,7 @@ dsh-purge --help
       inject: [systemPrompt, tools]
       config:
         enabled: true
-        autoApplyOnStart: false     # 宿主启动时自动打补丁
+        autoApplyOnStart: true      # 宿主启动时自动打补丁（写之前先拍快照）
         autoUpdateOnStart: false    # 启动时检查本仓库新版本
         autoRevertOnMissing: false  # 宿主文件消失时自动还原
         injectOnce: false           # 只在第一轮注入
@@ -286,7 +286,7 @@ dsh-purge --help
 | 键 | 默认 | 说明 |
 |---|---|---|
 | `enabled` | `true` | 总开关，关掉则完全不动宿主 |
-| `autoApplyOnStart` | `false` | 想让它在启动时自动打补丁再打开 |
+| `autoApplyOnStart` | `true` | 启动时自动打补丁。每次写宿主前都会拍一份快照，出问题用 `purge_restore { scope: "host" }` 搬回去 |
 | `autoUpdateOnStart` | `false` | 会访问本仓库比对版本 |
 | `stripMnemon` | `true` | 从组装里去掉第三方 mnemon 段 |
 | `capabilityProtocol` | `true` | 加上 skill / MCP 发现段 |

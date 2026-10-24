@@ -6,7 +6,7 @@
 
 <p align="center"><strong>DeepSeek Harness local security-eval &amp; prompt-cleaning plugin</strong></p>
 
-<p align="center"><strong>Version 1.3.7</strong></p>
+<p align="center"><strong>Version 1.3.8</strong></p>
 
 <p align="center">
   <a href="https://github.com/tang-coder-hub/dsh-purge/stargazers"><img src="https://img.shields.io/github/stars/tang-coder-hub/dsh-purge?logo=github&label=Stars" alt="GitHub stars"></a>
@@ -266,7 +266,7 @@ Plugin config lives in the profile's `cordis.patch.yml` (or the copy bundled in 
       inject: [systemPrompt, tools]
       config:
         enabled: true
-        autoApplyOnStart: false     # apply patches when the host boots
+        autoApplyOnStart: true      # apply patches when the host boots (snapshots first)
         autoUpdateOnStart: false    # check this repo for a newer version on boot
         autoRevertOnMissing: false  # revert when the host files disappear
         injectOnce: false           # inject only on the first turn
@@ -286,7 +286,7 @@ Plugin config lives in the profile's `cordis.patch.yml` (or the copy bundled in 
 | Key | Default | Notes |
 |---|---|---|
 | `enabled` | `true` | Master switch; `false` leaves the host untouched |
-| `autoApplyOnStart` | `false` | Turn on only if you want boot-time patching |
+| `autoApplyOnStart` | `true` | Patches the host at boot. A host snapshot is taken before every write, so `purge_restore { scope: "host" }` can put it back |
 | `autoUpdateOnStart` | `false` | Contacts this repo to compare versions |
 | `stripMnemon` | `true` | Removes third-party mnemon sections from the assembly |
 | `capabilityProtocol` | `true` | Adds the skill / MCP discovery section |
