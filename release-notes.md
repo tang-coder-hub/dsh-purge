@@ -1,3 +1,21 @@
+# 1.3.14
+
+## 中文
+
+- 版本 **1.3.14**。菜单里「回退」两个字重复三遍（顶部标题「选择回退方式」+ 两条条目的「回退一次」「回退上一轮」），读起来啰嗦且视觉上很吵。
+- **改成图标承担语义**：顶部标题只剩「回退」；两个条目的文字去掉重复的「回退」，只留差异部分 —— **「本轮」** 和 **「上一轮」**。
+- **条目图标升级为主视觉**：从 12px 的弱图标（opacity .55）改成 24×24 的**圆角方块徽章**，图标 15px、不透明、跟随主题色；悬停条目时徽章底色一起加深。这样两条目靠图标就能区分（单箭头 vs 双箭头），不用读文字。
+- 副标题缩进从 22px 调到 33px，与新的徽章宽度对齐。
+- 文案同步更新：中文 `rewind.once = 本轮`、`rewind.round = 上一轮`；英文 `= This round / Last round`。
+
+## English
+
+- Version **1.3.14**. "回退" appeared three times in the menu (caption "选择回退方式" plus "回退一次" and "回退上一轮"), which read as noise.
+- **Icons now carry the meaning**: the caption is reduced to "回退"; the two items drop the repeated word and keep only what differs — **「本轮」** and **「上一轮」**.
+- **Item icons promoted to the primary cue**: the weak 12px icon (opacity .55) becomes a 24×24 **rounded-square badge** with a 15px, fully opaque, theme-colored glyph; hovering an item deepens the badge background too. Single vs double arrow distinguishes the two items without reading text.
+- Hint indent moves from 22px to 33px to line up with the new badge width.
+- Copy updated: zh `rewind.once = 本轮`, `rewind.round = 上一轮`; en `= This round / Last round`.
+
 # 1.3.13
 
 ## 中文

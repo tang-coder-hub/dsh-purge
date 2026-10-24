@@ -438,9 +438,9 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"rewind.busy": "回退中…",
 			"rewind.empty": "没有可回退的上一句",
 			"rewind.fail": "回退失败: {error}",
-			"rewind.once": "回退一次",
+			"rewind.once": "本轮",
 			"rewind.once.hint": "把这一轮发出去的那句放回输入框，并清掉这一轮",
-			"rewind.round": "回退上一轮",
+			"rewind.round": "上一轮",
 			"rewind.round.hint": "把这一轮发出去的那句放回输入框；子代理也只撤这一轮",
 			"hooksDeny.title": "Hooks 拦截",
 			"hooksDeny.bypass": "放行 hooks 的 deny / ask（补丁 30 / 31 / 64 / 65）",
@@ -775,9 +775,9 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"rewind.busy": "Undoing…",
 			"rewind.empty": "Nothing to undo",
 			"rewind.fail": "Undo failed: {error}",
-			"rewind.once": "Undo once",
+			"rewind.once": "This round",
 			"rewind.once.hint": "Put this round's message back in the box and drop only this round",
-			"rewind.round": "Undo last round",
+			"rewind.round": "Last round",
 			"rewind.round.hint": "Put this round's message back in the box; subagents drop only this round",
 			"hooksDeny.title": "Hook interception",
 			"hooksDeny.bypass": "Bypass hook deny / ask (patches 30 / 31 / 64 / 65)",
@@ -2896,9 +2896,11 @@ body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#3
 .dshp-rewind-item{display:flex;flex-direction:column;gap:1px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:12px/1.3 var(--ds-font-sans,system-ui,sans-serif)}
 .dshp-rewind-item + .dshp-rewind-item{border-top:1px solid var(--dsw-alias-border-l2,rgba(0,0,0,.06))}
 .dshp-rewind-item:hover{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12))}
-.dshp-rewind-itemTitle{display:flex;align-items:center;gap:7px;color:var(--dsw-alias-label-primary,inherit);font-size:13px;font-weight:600;line-height:20px}
-.dshp-rewind-itemTitle svg{flex:none;opacity:.55}
-.dshp-rewind-itemHint{margin-left:22px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
+.dshp-rewind-itemTitle{display:flex;align-items:center;gap:9px;color:var(--dsw-alias-label-primary,inherit);font-size:13px;font-weight:600;line-height:22px}
+.dshp-rewind-glyph{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--dsw-alias-fill-l1,rgba(127,127,127,.10));color:var(--dsw-alias-label-secondary,inherit);transition:background .12s,color .12s}
+.dshp-rewind-item:hover .dshp-rewind-glyph{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.16));color:var(--dsw-alias-label-primary,inherit)}
+.dshp-rewind-glyph svg{display:block;opacity:1}
+.dshp-rewind-itemHint{margin-left:33px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
 body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-tertiary,#a8a39a)}
 .dshp-rewind-menuFoot{padding:6px 8px 2px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
 .dshp-rewind-menuFoot kbd{font:inherit;opacity:.8}`;
@@ -3298,7 +3300,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 				h("div", { className: "dshp-rewind-menuHead" },
 					h("svg", { viewBox: "0 0 16 16", width: "13", height: "13", "aria-hidden": true },
 						h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" })),
-					"选择回退方式"
+					"回退"
 				),
 				h("button", {
 					type: "button",
@@ -3307,9 +3309,10 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					onClick: (e) => { e.preventDefault(); e.stopPropagation(); runRewind("once"); },
 				},
 					h("span", { className: "dshp-rewind-itemTitle" },
-						h("svg", { viewBox: "0 0 16 16", width: "12", height: "12", "aria-hidden": true },
-							h("path", { fill: "currentColor", d: "M2 4h2v8H2zm3.2.2L11.6 2v12L5.2 11.8 2.6 9.6c-.4-.3-.6-.7-.6-1.2s.2-.9.6-1.2z" })),
-						rewindText(t, "rewind.once", "回退一次")
+						h("span", { className: "dshp-rewind-glyph" },
+							h("svg", { viewBox: "0 0 16 16", width: "15", height: "15", "aria-hidden": true },
+								h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" }))),
+						rewindText(t, "rewind.once", "本轮")
 					),
 					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.once.hint", "把这一轮发出去的那句放回输入框，并清掉这一轮"))
 				),
@@ -3320,13 +3323,15 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					onClick: (e) => { e.preventDefault(); e.stopPropagation(); runRewind("round"); },
 				},
 					h("span", { className: "dshp-rewind-itemTitle" },
-						h("svg", { viewBox: "0 0 16 16", width: "12", height: "12", "aria-hidden": true },
-							h("path", { fill: "currentColor", d: "M3 3h2v3.2L12.4 2v12L5 9.8V13H3z" })),
-						rewindText(t, "rewind.round", "回退上一轮")
+						h("span", { className: "dshp-rewind-glyph" },
+							h("svg", { viewBox: "0 0 16 16", width: "15", height: "15", "aria-hidden": true },
+								h("path", { fill: "currentColor", d: "M6.4 2.2 1.8 8l4.6 5.8 1.4-1.1L3.9 8l3.9-4.7z" }),
+								h("path", { fill: "currentColor", d: "M12.4 2.2 7.8 8l4.6 5.8 1.4-1.1L9.9 8l3.9-4.7z" }))),
+						rewindText(t, "rewind.round", "上一轮")
 					),
 					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮"))
 				),
-				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.13 · Esc 或点外部关闭")
+				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.14 · Esc 或点外部关闭")
 			);
 			return menu;
 		}
