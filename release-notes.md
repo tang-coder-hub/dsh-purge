@@ -1,3 +1,23 @@
+# 1.3.9
+
+## 中文
+
+- 版本 **1.3.9**。修掉「列表显示 `62 / 68`、那几条待处理永远打不上」的问题。
+- **根因一：变体表漏了宿主真正在用的写法。** `#57 developer role 白名单` 只登记了 `compat.supportsDeveloperRole ?`（无 `?.` 无 `!==`）和 `!== false` 的 `role` 分支，而宿主实际那行是 `const instructionRole = model.reasoning && compat?.supportsDeveloperRole !== false ? "developer" : "system";`。于是这一行永远匹配不上，而文件里其他变体已经被打过（`hasAnyMark` 认为「已打」）—— 状态就在 `applied` / `already` / `notFound` 之间打转。已把这种写法登记进变体表。
+- **根因二：`notFound` 把两件事揉成一件事。** 原来「文件里没有这段原文」和「匹配到了、写进去、回读校验不认」都落到 `notFound += 1`，显示出来都是「找不到」。现在后者单独计 `stuck`，并随报告返回 `stuck_paths`，界面上能直接看到是哪几个文件、哪几条。
+- **根因三：标记迁移没跟着走。** 旧版把 `[dsh-purge]` 统一迁成了 `[cfg]`，但部分 needle 里还写着旧标记，迁移之后这些 needle 就永久失配。已在变体表里按 `[cfg]` 对齐。
+- 新增 3 条回归测试（共 73 条）：`#57` 能命中带可选链与显式取反的写法、对已打过的内容幂等、变体表覆盖三种现实写法。
+- 实测：本机三条待处理清零，`65 / 68` applied、`0` notFound、`0` stuck；重启 DSH 后 9 个目标文件全部落地标记，`purge_status` 一致。
+
+## English
+
+- Version **1.3.9**. Fixes the "list says `62 / 68` and those pending rows never turn green" bug.
+- **Cause 1: the variant table missed the form the host actually ships.** `#57 developer role allowlist` only knew `compat.supportsDeveloperRole ?` (no `?.`, no `!==`) and the `!== false` `role` branch, while the real line is `const instructionRole = model.reasoning && compat?.supportsDeveloperRole !== false ? "developer" : "system";`. That line could never match, yet another variant in the same file was already patched (`hasAnyMark` reports "applied"), so the status bounced between `applied`, `already`, and `notFound`. That form is now in the variant table.
+- **Cause 2: `notFound` conflated two different failures.** "This text is not in the file" and "matched, written, but read-back verification disagrees" both did `notFound += 1`, so both showed up as "not found". The latter is now counted as `stuck` and reported with `stuck_paths`, so the UI can show exactly which files and which entries.
+- **Cause 3: a marker migration left needles behind.** Older versions rewrote `[dsh-purge]` to `[cfg]`, but some needles still carried the old marker, so they could never match after the migration. Aligned on `[cfg]`.
+- 3 new regression tests (73 total): `#57` matches the optional-chain/negated form, is idempotent on already-patched text, and the variant table covers all three real-world forms.
+- Measured locally: the three pending rows cleared, `65 / 68` applied, `0` notFound, `0` stuck; after a DSH restart all 9 target files carry the marker and `purge_status` agrees.
+
 # 1.3.8
 
 ## 中文
