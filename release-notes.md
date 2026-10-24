@@ -1,3 +1,21 @@
+# 1.3.11
+
+## 中文
+
+- 版本 **1.3.11**。回退入口从输入框右侧搬到**会话标题栏右侧**（`conversation.session.header.utilities`，和「在应用中打开」、日程、日志导出那一排同一行），输入框那一行只剩模型切换和发送，不再挤。
+- **菜单改成纯 CSS 绝对定位**：`position:absolute; top:calc(100% + 6px); right:0`，挂在按钮自己的容器里，右边缘与按钮右边缘严格对齐。原先用 `createPortal` 挂到 `document.body` 再手算 `left/top`，按钮位置一变（切会话、改窗口大小、输入框行控件变化）坐标就算错了，菜单会漂到对话区中间；现在没有坐标计算，也就不可能漂。
+- 顺手删掉 portal 分支和 `menuPos` state：菜单作为按钮容器的子节点渲染，`onDoc` 的 `contains` 判断继续管点外关闭，行为不变。
+- 保留 1.3.10 的其余修复：`width:228px` 固定、`--dsw-specific-menu` 不透明底 + `background-color` 兜底、标题与描述各占一行。
+- 实测：73 条测试全过；`menuPos` / `createPortal(menu)` 在源码里 0 残留，`conversation.input.right` 0 残留。
+
+## English
+
+- Version **1.3.11**. The rewind entry moves out of the input bar's right side and into the **session header utilities** (`conversation.session.header.utilities` — the same row as Open in App, schedule, and log export), so the input row keeps only the model switcher and send.
+- **The menu is now pure CSS absolute positioning**: `position:absolute; top:calc(100% + 6px); right:0` inside the button's own wrapper, so its right edge lines up with the button exactly. Previously it was `createPortal`-ed to `document.body` with hand-computed `left/top`; whenever the button moved (session switch, window resize, input-row control changes) the coordinates were wrong and the menu drifted into the middle of the transcript. With no coordinate math it cannot drift.
+- Also removed the portal branch and the `menuPos` state: the menu renders as a child of the button wrapper, and the existing `contains` check in `onDoc` still handles click-outside.
+- Keeps the rest of 1.3.10: fixed `width:228px`, opaque `--dsw-specific-menu` background with a `background-color` fallback, title and hint on separate lines.
+- Verified: 73 tests pass; `menuPos` and `createPortal(menu)` are 0 in source, `conversation.input.right` is 0.
+
 # 1.3.10
 
 ## 中文

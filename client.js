@@ -2888,7 +2888,7 @@ body:not([data-ds-dark-theme]) .dshp-auth-ops button.primary{background:var(--ds
 .dshp-rewind:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
 .dshp-rewind:disabled{opacity:.4;cursor:default}
 .dshp-rewind svg{display:block}
-.dshp-rewind-menu{position:fixed;z-index:2147483000;box-sizing:border-box;width:228px;min-width:228px;max-width:calc(100vw - 16px);padding:4px;border:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.10));border-radius:12px;background:var(--dsw-specific-menu,#fff);background-color:var(--dsw-specific-menu,#fff);color:var(--dsw-alias-label-primary,#1a1a1a);--dsw-elevation-stroke-color:var(--dsw-alias-border-l1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.16));transform:translateY(-100%);overflow:hidden}
+.dshp-rewind-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:2147483000;box-sizing:border-box;width:228px;min-width:228px;max-width:calc(100vw - 16px);padding:4px;border:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.10));border-radius:12px;background:var(--dsw-specific-menu,#fff);background-color:var(--dsw-specific-menu,#fff);color:var(--dsw-alias-label-primary,#1a1a1a);--dsw-elevation-stroke-color:var(--dsw-alias-border-l1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.16));overflow:hidden}
 body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#32312d);background-color:var(--dsw-specific-menu,#32312d);color:var(--dsw-alias-label-primary,#e6e2db);border-color:var(--dsw-alias-border-l1,#3f3d38);--dsw-elevation-stroke-color:var(--dsw-alias-border-l1,#3f3d38);box-shadow:var(--dsw-elevation-prominent,0 10px 28px rgba(0,0,0,.45))}
 .dshp-rewind-item{display:flex;flex-direction:column;gap:2px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:12px/1.3 var(--ds-font-sans,system-ui,sans-serif)}
 .dshp-rewind-item:hover{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12))}
@@ -3288,12 +3288,11 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 			);
 		}
 
-		function rewindMenuNode(t, menuPos, menuRef, runRewind) {
+		function rewindMenuNode(t, menuRef, runRewind) {
 			const menu = h("div", {
 				className: "dshp-rewind-menu",
 				role: "menu",
 				ref: menuRef,
-				style: menuPos ? { left: menuPos.left + "px", top: menuPos.top + "px" } : { left: "8px", bottom: "48px", transform: "none" },
 			},
 				h("button", {
 					type: "button",
@@ -3314,19 +3313,13 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 					h("span", null, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮")),
 				),
 			);
-			try {
-				const rd = require("react-dom");
-				if (rd && typeof rd.createPortal === "function" && typeof document !== "undefined") {
-					return rd.createPortal(menu, document.body);
-				}
-			} catch { /* 没有 portal 时菜单仍挂在按钮旁 */ }
 			return menu;
 		}
 
 		class RewindFallback extends Component {
 			constructor(p) {
 				super(p);
-				this.state = { menu: false, busy: false, notice: "", menuPos: null };
+				this.state = { menu: false, busy: false, notice: "" };
 				this.wrap = null;
 				this.menuEl = null;
 				this.onDoc = (event) => {
@@ -3367,12 +3360,7 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 				});
 			}
 			openMenu() {
-				const rect = this.wrap && this.wrap.getBoundingClientRect ? this.wrap.getBoundingClientRect() : null;
-				this.setState({
-					menu: !this.state.menu,
-					notice: "",
-					menuPos: rect ? { left: Math.max(8, rect.right - 228), top: Math.max(8, rect.top - 8) } : null,
-				});
+				this.setState({ menu: !this.state.menu, notice: "" });
 			}
 			render() {
 				const sessionId = this.props.sessionId || currentSessionId(rewindSessions);
@@ -3387,7 +3375,7 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 						onMouseDown: (e) => e.preventDefault(),
 						onClick: (e) => { e.preventDefault(); this.openMenu(); },
 					}, label),
-					this.state.menu ? rewindMenuNode(t, this.state.menuPos, (node) => { this.menuEl = node; }, (mode) => this.run(mode)) : null,
+					this.state.menu ? rewindMenuNode(t, (node) => { this.menuEl = node; }, (mode) => this.run(mode)) : null,
 				);
 			}
 		}
@@ -3402,7 +3390,6 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 			const [busy, setBusy] = useState(false);
 			const [notice, setNotice] = useState("");
 			const [menu, setMenu] = useState(false);
-			const [menuPos, setMenuPos] = useState(null);
 
 			useEffect(() => {
 				if (!sessionId) return;
@@ -3460,13 +3447,6 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 					setMenu(false);
 					return;
 				}
-				const rect = wrapRef.current?.getBoundingClientRect?.();
-				if (rect) {
-					setMenuPos({
-						left: Math.max(8, rect.right - 228),
-						top: Math.max(8, rect.top - 8),
-					});
-				}
 				setNotice("");
 				setMenu(true);
 			};
@@ -3498,7 +3478,7 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 					),
 					label,
 				),
-				menu ? rewindMenuNode(t, menuPos, menuRef, runRewind) : null,
+				menu ? rewindMenuNode(t, menuRef, runRewind) : null,
 			);
 		}
 
@@ -8639,24 +8619,16 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 			rewindSessions = ctx.sessions;
 			rewindWorkspace = ctx.uiWorkspace || null;
 			rewindConversation = ctx.conversation || null;
-			ctx.slots.inject("conversation.input.right", () => ctx.slots.register({
-				name: "conversation.input.right",
+			ctx.slots.inject("conversation.session.header.utilities", () => ctx.slots.register({
+				name: "conversation.session.header.utilities",
 				id: "dsh-purge-rewind",
 				order: 20,
+				label: "回退",
 				inject: (sessionId) => ({
 					sessionId,
 					t: ctx.locale.bind(NS),
 				}),
 			}, RewindSafe));
-			// ctx.slots.inject("conversation.input.right", () => ctx.slots.register({
-			// 	name: "conversation.input.right",
-			// 	id: "dsh-purge-continue",
-			// 	order: 21,
-			// 	inject: (sessionId) => ({
-			// 		sessionId,
-			// 		t: ctx.locale.bind(NS),
-			// 	}),
-			// }, ContinueSafe));
 			ctx.effect(() => installRewindWatch(ctx), "dsh-purge: rewind watch");
 		}
 
