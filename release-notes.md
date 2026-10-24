@@ -1,3 +1,23 @@
+# 1.3.10
+
+## 中文
+
+- 版本 **1.3.10**。修回退菜单的三处观感问题：标题和描述黏成一行、弹出层与按钮不对齐、背景太透看着重影。
+- **两份样式表打架**：`PURGE_CSS` 里有一套旧的 `.dshp-rewind-menu` / `.dshp-rewind-item`（`display:block`、`position:absolute`、`background:var(--dshp-paper)`），`REWIND_CSS` 里另有一套新的（`display:flex;flex-direction:column`、`position:fixed`）。两边特异性相同，谁后注入谁胜，结果跑到了旧那套 —— `<b>` 和 `<span>` 都是 inline，于是「回退一次把这一轮发出去的那句……」黏成一行。已删掉 `PURGE_CSS` 里那三条，只留 `REWIND_CSS`。
+- **菜单宽度没约束**：定位按 `rect.right - 228` 算（228 = 220 最小宽 + 左右 padding），但 CSS 只有 `min-width`，长描述直接把菜单撞到 700 多像素宽 —— 于是右边溢出、左边错位，跟旁边对不齐。现在固定 `width:228px`，与定位宽度一致，描述在框内换行。
+- **背景变量不在作用域**：菜单是 `createPortal` 到 `document.body` 的，`--dshp-paper` 定义在面板容器上，portal 出去后就取不到 —— `background:var(--dshp-paper)` 变成无效值，背景透明，底下的字透上来重影。现在改用 `--dsw-specific-menu`（宿主主题变量），并补 `background-color` 兼底，暗色主题同样处理，另加 1px 描边把边界拉清。
+- 标题与描述各占一行（`display:block` + `margin-top:2px` + `line-height:1.45`），不再挤。
+- 实测：73 条测试全过，`client.js` 语法过；菜单宽 228px、背景不透明、右边缘与「回退」按钮右边缘对齐。
+
+## English
+
+- Version **1.3.10**. Fixes three visual defects in the rewind menu: title and hint collapsing onto one line, the popover not aligning with its button, and a too-transparent background that lets text ghost through.
+- **Two stylesheets fought each other**: `PURGE_CSS` carried an older `.dshp-rewind-menu` / `.dshp-rewind-item` pair (`display:block`, `position:absolute`, `background:var(--dshp-paper)`), while `REWIND_CSS` carried a newer one (`display:flex;flex-direction:column`, `position:fixed`). Same specificity, so whichever was injected last won — and the old one did, leaving `<b>` and `<span>` as inline boxes and glueing "回退一次" to its hint. The three stale rules are gone; `REWIND_CSS` is now the only source.
+- **The menu had no width constraint**: positioning uses `rect.right - 228` (228 = 220 minimum plus padding), but the CSS only set `min-width`, so a long hint stretched the menu past 700px — overflowing on the right and misaligning on the left. It is now fixed at `width:228px`, matching the positioning math, with hints wrapping inside.
+- **Background variable was out of scope**: the menu is `createPortal`-ed to `document.body`, while `--dshp-paper` is defined on the panel container, so `background:var(--dshp-paper)` resolved to nothing and the background went transparent, ghosting the text underneath. It now uses the host theme variable `--dsw-specific-menu` with a `background-color` fallback, dark theme handled too, plus a 1px border to make the edge read.
+- Title and hint each take their own line (`display:block`, `margin-top:2px`, `line-height:1.45`).
+- Verified: 73 tests pass, `client.js` parses; the menu is 228px wide, opaque, and its right edge lines up with the rewind button.
+
 # 1.3.9
 
 ## 中文
