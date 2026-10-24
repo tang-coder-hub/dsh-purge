@@ -1,3 +1,25 @@
+# 1.3.12
+
+## 中文
+
+- 版本 **1.3.12**。回退菜单整块重做，1.3.10 / 1.3.11 都是在旧骨架上补丁（拆分 flex、补背景、挪位置），你看到的还是同一套东西 —— 这次从结构到样式全部换掉。
+- **按钮缩成纯图标**：28×28 的图标按钮，不再显示「回退」两个字。标题栏那一排本来就窄，文字按钮把间距顶开了。悬停高亮、展开态高亮（`aria-expanded=true`）都保留。
+- **菜单结构重做**：从「两个裸按钮」改成带层次的面板 —— 顶部一行小标题「↩ 选择回退方式」，中间两个条目（每条 = 图标 + 标题 + 副标题两行文字），底部一行操作提示「Esc 或点外部关闭」。条目之间用 1px 分隔线，不再靠留白猜边界。
+- **宽度 300px**：副标题是完整句子，228px 下每句都要折两行；300px 下「把这一轮发出去的那句放回输入框，并清掉这一轮」刚好一行放下。
+- **Esc 关闭**：菜单展开时按 Escape 关闭，和点外部关闭等价。
+- 圆角从 12 提到 14、阴影加重、内边距 6px，整体脱离「贴在原地面板上的补丁」观感。
+- 实测：73 条测试全过，`node --check` 通过。
+
+## English
+
+- Version **1.3.12**. The rewind menu is rebuilt from scratch — 1.3.10 and 1.3.11 were patches on the same old skeleton (flex split, background fix, relocation), so what you saw was still the same thing wearing fixes. This replaces the structure and the styling wholesale.
+- **The trigger is now icon-only**: a 28×28 icon button, no "回退" text. The header row is narrow and the text button was pushing the spacing apart. Hover and open states (`aria-expanded=true`) still highlight.
+- **New menu structure**: instead of two bare buttons it is a layered panel — a small caption row on top ("↩ choose how to rewind"), two items in the middle (icon + title + two-line hint each), and an action hint at the bottom ("Esc or click outside to close"). Items are separated by a 1px rule instead of relying on whitespace.
+- **300px wide**: the hints are full sentences that wrapped to two lines at 228px; at 300px "把这一轮发出去的那句放回输入框，并清掉这一轮" fits on one line.
+- **Esc closes** the menu, equivalent to clicking outside.
+- Corner radius up from 12 to 14, heavier shadow, 6px padding — so it reads as a real surface instead of a patch on the page.
+- Verified: 73 tests pass, `node --check` clean.
+
 # 1.3.11
 
 ## 中文

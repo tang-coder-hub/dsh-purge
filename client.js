@@ -2884,23 +2884,24 @@ body:not([data-ds-dark-theme]) .dshp-auth-ops button.primary{background:var(--ds
 
 		const REWIND_CSS = `
 .dshp-rewind-wrap{position:relative;display:inline-flex}
-.dshp-rewind{appearance:none;display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 8px;border:0;border-radius:8px;background:transparent;color:var(--dsw-alias-label-secondary,currentColor);font:12px/1 var(--ds-font-sans,system-ui,sans-serif);cursor:pointer}
+.dshp-rewind{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:28px;height:28px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--dsw-alias-label-secondary,currentColor);cursor:pointer}
 .dshp-rewind:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
 .dshp-rewind:disabled{opacity:.4;cursor:default}
+.dshp-rewind[aria-expanded=true]{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
 .dshp-rewind svg{display:block}
-.dshp-rewind-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:2147483000;box-sizing:border-box;width:228px;min-width:228px;max-width:calc(100vw - 16px);padding:4px;border:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.10));border-radius:12px;background:var(--dsw-specific-menu,#fff);background-color:var(--dsw-specific-menu,#fff);color:var(--dsw-alias-label-primary,#1a1a1a);--dsw-elevation-stroke-color:var(--dsw-alias-border-l1);box-shadow:var(--dsw-elevation-prominent,0 8px 24px rgba(0,0,0,.16));overflow:hidden}
-body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#32312d);background-color:var(--dsw-specific-menu,#32312d);color:var(--dsw-alias-label-primary,#e6e2db);border-color:var(--dsw-alias-border-l1,#3f3d38);--dsw-elevation-stroke-color:var(--dsw-alias-border-l1,#3f3d38);box-shadow:var(--dsw-elevation-prominent,0 10px 28px rgba(0,0,0,.45))}
-.dshp-rewind-item{display:flex;flex-direction:column;gap:2px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:12px/1.3 var(--ds-font-sans,system-ui,sans-serif)}
+.dshp-rewind-text{font-size:12px;line-height:1;white-space:nowrap}
+.dshp-rewind-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:2147483000;box-sizing:border-box;width:300px;max-width:calc(100vw - 16px);padding:6px;border:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.10));border-radius:14px;background:var(--dsw-specific-menu,#fff);background-color:var(--dsw-specific-menu,#fff);color:var(--dsw-alias-label-primary,#1a1a1a);box-shadow:var(--dsw-elevation-prominent,0 12px 32px rgba(0,0,0,.16))}
+body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#32312d);background-color:var(--dsw-specific-menu,#32312d);color:var(--dsw-alias-label-primary,#e6e2db);border-color:var(--dsw-alias-border-l1,#3f3d38);box-shadow:var(--dsw-elevation-prominent,0 12px 36px rgba(0,0,0,.5))}
+.dshp-rewind-menuHead{display:flex;align-items:center;gap:6px;padding:2px 8px 6px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;font-weight:500;line-height:16px}
+.dshp-rewind-item{display:flex;flex-direction:column;gap:1px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:12px/1.3 var(--ds-font-sans,system-ui,sans-serif)}
+.dshp-rewind-item + .dshp-rewind-item{border-top:1px solid var(--dsw-alias-border-l2,rgba(0,0,0,.06))}
 .dshp-rewind-item:hover{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12))}
-.dshp-rewind-item b{display:block;font-size:13px;font-weight:600;line-height:1.35;color:var(--dsw-alias-label-primary,inherit)}
-.dshp-rewind-item span{display:block;margin-top:2px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:1.45;white-space:normal}
-body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tertiary,#a8a39a)}
-.dshp-continue{appearance:none;display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 8px;border:0;border-radius:8px;background:transparent;color:var(--dsw-alias-label-secondary,currentColor);font:12px/1 var(--ds-font-sans,system-ui,sans-serif);cursor:pointer}
-.dshp-continue:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
-.dshp-continue:disabled{opacity:.4;cursor:default}
-.dshp-continue.is-ready{color:var(--dsw-alias-label-primary,currentColor)}
-.dshp-continue svg{display:block}
-`;
+.dshp-rewind-itemTitle{display:flex;align-items:center;gap:7px;color:var(--dsw-alias-label-primary,inherit);font-size:13px;font-weight:600;line-height:20px}
+.dshp-rewind-itemTitle svg{flex:none;opacity:.55}
+.dshp-rewind-itemHint{margin-left:22px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
+body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-tertiary,#a8a39a)}
+.dshp-rewind-menuFoot{padding:6px 8px 2px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
+.dshp-rewind-menuFoot kbd{font:inherit;opacity:.8}`;
 		const DRAFT_KEY = "dshp-rewind-draft:";
 		const ARM_KEY = "dshp-rewind-arm:";
 		const FILL_DELAYS = [0, 50, 180, 400, 800];
@@ -3294,14 +3295,23 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 				role: "menu",
 				ref: menuRef,
 			},
+				h("div", { className: "dshp-rewind-menuHead" },
+					h("svg", { viewBox: "0 0 16 16", width: "13", height: "13", "aria-hidden": true },
+						h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" })),
+					"选择回退方式"
+				),
 				h("button", {
 					type: "button",
 					className: "dshp-rewind-item",
 					onMouseDown: (e) => { e.preventDefault(); e.stopPropagation(); },
 					onClick: (e) => { e.preventDefault(); e.stopPropagation(); runRewind("once"); },
 				},
-					h("b", null, rewindText(t, "rewind.once", "回退一次")),
-					h("span", null, rewindText(t, "rewind.once.hint", "把这一轮发出去的那句放回输入框，并清掉这一轮")),
+					h("span", { className: "dshp-rewind-itemTitle" },
+						h("svg", { viewBox: "0 0 16 16", width: "12", height: "12", "aria-hidden": true },
+							h("path", { fill: "currentColor", d: "M2 4h2v8H2zm3.2.2L11.6 2v12L5.2 11.8 2.6 9.6c-.4-.3-.6-.7-.6-1.2s.2-.9.6-1.2z" })),
+						rewindText(t, "rewind.once", "回退一次")
+					),
+					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.once.hint", "把这一轮发出去的那句放回输入框，并清掉这一轮"))
 				),
 				h("button", {
 					type: "button",
@@ -3309,9 +3319,14 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 					onMouseDown: (e) => { e.preventDefault(); e.stopPropagation(); },
 					onClick: (e) => { e.preventDefault(); e.stopPropagation(); runRewind("round"); },
 				},
-					h("b", null, rewindText(t, "rewind.round", "回退上一轮")),
-					h("span", null, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮")),
+					h("span", { className: "dshp-rewind-itemTitle" },
+						h("svg", { viewBox: "0 0 16 16", width: "12", height: "12", "aria-hidden": true },
+							h("path", { fill: "currentColor", d: "M3 3h2v3.2L12.4 2v12L5 9.8V13H3z" })),
+						rewindText(t, "rewind.round", "回退上一轮")
+					),
+					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮"))
 				),
+				h("div", { className: "dshp-rewind-menuFoot" }, "Esc 或点外部关闭")
 			);
 			return menu;
 		}
@@ -3403,13 +3418,20 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 
 			useEffect(() => {
 				if (!menu) return;
+				const onKey = (event) => {
+					if (event.key === "Escape") setMenu(false);
+				};
 				const onDoc = (event) => {
 					if (wrapRef.current && wrapRef.current.contains(event.target)) return;
 					if (menuRef.current && menuRef.current.contains(event.target)) return;
 					setMenu(false);
 				};
 				document.addEventListener("mousedown", onDoc);
-				return () => document.removeEventListener("mousedown", onDoc);
+				document.addEventListener("keydown", onKey);
+				return () => {
+					document.removeEventListener("mousedown", onDoc);
+					document.removeEventListener("keydown", onKey);
+				};
 			}, [menu]);
 
 			const runRewind = async (mode) => {
@@ -3462,7 +3484,7 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 				h("style", null, REWIND_CSS),
 				h("button", {
 					type: "button",
-					className: "dshp-rewind",
+					className: "dshp-rewind" + (menu ? " on" : ""),
 					title,
 					"aria-label": rewindText(t, "rewind.aria", "回退"),
 					"aria-expanded": menu ? "true" : "false",
@@ -3476,7 +3498,7 @@ body[data-ds-dark-theme] .dshp-rewind-item span{color:var(--dsw-alias-label-tert
 							d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z",
 						}),
 					),
-					label,
+					h("span", { className: "dshp-rewind-text" }, label)
 				),
 				menu ? rewindMenuNode(t, menuRef, runRewind) : null,
 			);
