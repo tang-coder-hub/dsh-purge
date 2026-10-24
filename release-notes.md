@@ -1,3 +1,17 @@
+# 1.3.13
+
+## 中文
+
+- 版本 **1.3.13**。菜单底部加了一行版本号（`v1.3.13 · Esc 或点外部关闭`），用来确认渲染进程到底加载的是哪一份 `client.js`。
+- **为什么需要它**：前几轮改完你都说「没变化」，实测发现是加载时机问题 —— 插件 `client.js` 在 0:54 写入，而 DSH 渲染进程大多是 0:34 启动的，旧进程不会重读 bundle。有了这行版本号，重启后一眼就能看出跑的是新代码还是旧代码。
+- 其余与 1.3.12 一致：图标按钮 + 分层面板（小标题 / 两条各带图标 / 底部提示）、300px 宽度、Esc 关闭、条目间 1px 分隔线。
+
+## English
+
+- Version **1.3.13**. Adds a version line to the menu footer (`v1.3.13 · Esc or click outside`) so you can tell which `client.js` the renderer actually loaded.
+- **Why**: you reported "no change" for several rounds; measurement showed a load-timing issue — the plugin `client.js` was written at 0:54 while most DSH renderer processes had started around 0:34, and old processes never re-read the bundle. The version line makes it obvious at a glance whether new or old code is running.
+- Otherwise identical to 1.3.12: icon button + layered panel (caption / two icon items / footer hint), 300px width, Esc to close, 1px separators.
+
 # 1.3.12
 
 ## 中文

@@ -3326,7 +3326,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					),
 					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮"))
 				),
-				h("div", { className: "dshp-rewind-menuFoot" }, "Esc 或点外部关闭")
+				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.13 · Esc 或点外部关闭")
 			);
 			return menu;
 		}
