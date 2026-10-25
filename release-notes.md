@@ -1,3 +1,23 @@
+# 1.3.16
+
+## 中文
+
+- 版本 **1.3.16**。回退图标从会话标题栏搬到**最后一条用户消息的操作行**，就排在「复制」旁边。
+- **为什么不再放标题栏**：标题栏那一排是「整个会话」级操作（打开目录、导出日志、侧边栏），回退针对的是“最近一轮”，放在消息旁才对得上语义；而且标题栏本来就挤。
+- **怎么挂的**：宿主没有为用户消息开放 actions 槽位（`conversation.chat.node` 的 user 节点不接受子槽），所以按语义找 DOM：定位最后一个 `[data-chat-flow-kind="user"]` 行，在里面找 `aria-label`/`title`/文本含「复制」或 `Copy` 的按钮，拿它的父容器作为挂载点，再用 `createPortal` 把图标插进去。
+- **只挂最后一条**：回退本来就是“回退最近一轮”，每条消息都挂反而误导（点旧消息上的回退并不会退到那个点）。
+- 用 `MutationObserver` + 1.2s 轮询双保险，切换会话 / 消息重排后会自动重新定位。
+- 标题栏那个 slot 注入已完全移除（`conversation.session.header.utilities` 在源码里 0 残留）。
+
+## English
+
+- Version **1.3.16**. The rewind icon moves from the session header into the **last user message's action row**, right next to Copy.
+- **Why not the header**: that row holds session-level actions (open directory, export logs, sidebar), while rewind targets "the latest turn" — it belongs next to the message. The header was crowded anyway.
+- **How it attaches**: the host does not expose an actions slot for user messages (the `user` node of `conversation.chat.node` takes no child slots), so it finds the DOM semantically: locate the last `[data-chat-flow-kind="user"]` row, find a button whose `aria-label`/`title`/text matches Copy, use that button's parent as the mount point, and `createPortal` the icon in.
+- **Only the last row** gets it: rewind means "undo the most recent turn", so putting it on every message would mislead (clicking rewind on an old message does not jump to that point).
+- A `MutationObserver` plus a 1.2s poll re-locates it after session switches or re-layout.
+- The header slot injection is fully removed (`conversation.session.header.utilities` is 0 in source).
+
 # 1.3.15
 
 ## 中文

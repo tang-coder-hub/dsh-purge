@@ -2895,6 +2895,7 @@ body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#3
 .dshp-rewind-item{display:flex;flex-direction:column;gap:1px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:12px/1.3 var(--ds-font-sans,system-ui,sans-serif)}
 .dshp-rewind-item + .dshp-rewind-item{border-top:1px solid var(--dsw-alias-border-l2,rgba(0,0,0,.06))}
 .dshp-rewind-item:hover{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12))}
+.dshp-rewind-inline{display:inline-flex;align-items:center;margin-left:2px}
 .dshp-rewind-itemTitle{display:flex;align-items:center;gap:9px;color:var(--dsw-alias-label-primary,inherit);font-size:13px;font-weight:600;line-height:22px}
 .dshp-rewind-glyph{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--dsw-alias-fill-l1,rgba(127,127,127,.10));color:var(--dsw-alias-label-secondary,inherit);transition:background .12s,color .12s}
 .dshp-rewind-item:hover .dshp-rewind-glyph{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.16));color:var(--dsw-alias-label-primary,inherit)}
@@ -3330,7 +3331,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					),
 					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮"))
 				),
-				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.15 · Esc 或点外部关闭")
+				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.16 · Esc 或点外部关闭")
 			);
 			return menu;
 		}
@@ -8641,21 +8642,54 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 		}
 
 
+		/** 把回退图标挂到最后一条用户消息的操作行（复制按钮旁边）。
+		 *  宿主没有为用户消息开放 actions 槽位，只能按语义找 DOM 再 portal。
+		 *  只挂最后一条：回退本来就是“回退最近一轮”。 */
+		function RewindInMessageActions() {
+			const [host, setHost] = useState(null);
+			useEffect(() => {
+				let dead = false;
+				const ensure = () => {
+					if (dead) return;
+					try {
+						const rows = document.querySelectorAll('[data-chat-flow-kind="user"]');
+						const last = rows.length ? rows[rows.length - 1] : null;
+						if (!last) { setHost((p) => (p === null ? p : null)); return; }
+						let target = null;
+						for (const b of last.querySelectorAll("button")) {
+							const label = [b.getAttribute("aria-label"), b.getAttribute("title"), b.textContent].filter(Boolean).join(" ");
+							if (/复制|Copy/i.test(label)) { target = b.parentElement; break; }
+						}
+						if (!target) target = last.querySelector('[class*="actions"]');
+						if (!target) return;
+						let el = target.querySelector(":scope > .dshp-rewind-inline");
+						if (!el) {
+							el = document.createElement("span");
+							el.className = "dshp-rewind-inline";
+							target.appendChild(el);
+						}
+						setHost((prev) => (prev === el ? prev : el));
+					} catch { /* ignore */ }
+				};
+				ensure();
+				const obs = typeof MutationObserver !== "undefined" ? new MutationObserver(() => ensure()) : null;
+				if (obs) obs.observe(document.body, { childList: true, subtree: true });
+				const iv = setInterval(ensure, 1200);
+				return () => { dead = true; if (obs) obs.disconnect(); clearInterval(iv); };
+			}, []);
+			if (!host) return null;
+			try {
+				const rd = require("react-dom");
+				if (rd && typeof rd.createPortal === "function") return rd.createPortal(h(RewindSafe, { t: translate }), host);
+			} catch { /* 没有 portal 就不挂 */ }
+			return null;
+		}
+
 		function installRewindUi(ctx) {
 			rewindHost = ctx;
 			rewindSessions = ctx.sessions;
 			rewindWorkspace = ctx.uiWorkspace || null;
 			rewindConversation = ctx.conversation || null;
-			ctx.slots.inject("conversation.session.header.utilities", () => ctx.slots.register({
-				name: "conversation.session.header.utilities",
-				id: "dsh-purge-rewind",
-				order: 20,
-				label: "回退",
-				inject: (sessionId) => ({
-					sessionId,
-					t: ctx.locale.bind(NS),
-				}),
-			}, RewindSafe));
 			ctx.effect(() => installRewindWatch(ctx), "dsh-purge: rewind watch");
 		}
 
@@ -8667,7 +8701,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 				name: "shell.overlay",
 				id: "dsh-purge-dock",
 				order: 50,
-			}, () => h(react.Fragment, null, h(WelcomeNotice), h(PurgeDock), h(TabRowPurgeMount), h(EnvAdaptSendGate))));
+			}, () => h(react.Fragment, null, h(WelcomeNotice), h(PurgeDock), h(TabRowPurgeMount), h(EnvAdaptSendGate), h(RewindInMessageActions))));
 			try {
 				if (typeof ctx.inject === "function") {
 					ctx.inject(["sessions", "uiWorkspace", "workspaces", "conversation"], (host) => installRewindUi(host));
