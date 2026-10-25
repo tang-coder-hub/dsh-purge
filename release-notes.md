@@ -1,3 +1,19 @@
+# 1.3.15
+
+## 中文
+
+- 版本 **1.3.15**。标题栏的「回退」按钮终于真的只剩图标了。
+- **上一版漏了什么**：1.3.14 只改了 CSS（把按钮定成 28×28），但 JSX 里 `}, label)` 和 `h("span", { className: "dshp-rewind-text" }, label)` 两个文字节点还在，所以按钮被字撑开、跟旁边的图标对不齐。这次两处文字节点全部删掉，CSS 的 `.dshp-rewind-text` 一并移除。
+- 按钮现在与标题栏其他图标同为 28×28 方块，图标 15px，右侧留白与旁边一致。
+- 失败提示不再压在按钮上（原先文字会被截成 18 字），改为只在 `title` 悬停提示里显示完整错误。
+
+## English
+
+- Version **1.3.15**. The header rewind button is finally icon-only for real.
+- **What 1.3.14 missed**: it only changed CSS (28×28), while the JSX still rendered `}, label)` and `h("span", { className: "dshp-rewind-text" }, label)`. The text kept widening the button and breaking alignment with neighbouring icons. Both text nodes are gone now, and the `.dshp-rewind-text` rule is removed.
+- The button is now a 28×28 square like the other header icons, 15px glyph, matching right-side spacing.
+- Failure notices no longer overwrite the button label (previously truncated to 18 chars); the full error is shown in the `title` tooltip only.
+
 # 1.3.14
 
 ## 中文

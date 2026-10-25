@@ -2889,7 +2889,6 @@ body:not([data-ds-dark-theme]) .dshp-auth-ops button.primary{background:var(--ds
 .dshp-rewind:disabled{opacity:.4;cursor:default}
 .dshp-rewind[aria-expanded=true]{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
 .dshp-rewind svg{display:block}
-.dshp-rewind-text{font-size:12px;line-height:1;white-space:nowrap}
 .dshp-rewind-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:2147483000;box-sizing:border-box;width:300px;max-width:calc(100vw - 16px);padding:6px;border:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.10));border-radius:14px;background:var(--dsw-specific-menu,#fff);background-color:var(--dsw-specific-menu,#fff);color:var(--dsw-alias-label-primary,#1a1a1a);box-shadow:var(--dsw-elevation-prominent,0 12px 32px rgba(0,0,0,.16))}
 body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#32312d);background-color:var(--dsw-specific-menu,#32312d);color:var(--dsw-alias-label-primary,#e6e2db);border-color:var(--dsw-alias-border-l1,#3f3d38);box-shadow:var(--dsw-elevation-prominent,0 12px 36px rgba(0,0,0,.5))}
 .dshp-rewind-menuHead{display:flex;align-items:center;gap:6px;padding:2px 8px 6px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;font-weight:500;line-height:16px}
@@ -3331,7 +3330,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					),
 					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮"))
 				),
-				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.14 · Esc 或点外部关闭")
+				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.15 · Esc 或点外部关闭")
 			);
 			return menu;
 		}
@@ -3394,7 +3393,9 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 						disabled: this.state.busy || !sessionId,
 						onMouseDown: (e) => e.preventDefault(),
 						onClick: (e) => { e.preventDefault(); this.openMenu(); },
-					}, label),
+					},
+						h("svg", { viewBox: "0 0 16 16", width: "15", height: "15", "aria-hidden": true },
+							h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" }))),
 					this.state.menu ? rewindMenuNode(t, (node) => { this.menuEl = node; }, (mode) => this.run(mode)) : null,
 				);
 			}
@@ -3503,7 +3504,6 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 							d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z",
 						}),
 					),
-					h("span", { className: "dshp-rewind-text" }, label)
 				),
 				menu ? rewindMenuNode(t, menuRef, runRewind) : null,
 			);
