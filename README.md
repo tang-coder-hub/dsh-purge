@@ -59,7 +59,6 @@
 | **Workspace policy** | `strict` / `fallback` / `always` — decides whether the harness's own workspace baseline section survives alongside your prompt |
 | **Own servers** | A whitelist (`$DSH_HOME/net-scope-allow.txt`) of exact IPs / hostnames that are yours. Anything not listed stays out of scope |
 | **Skills** | Import a zip or folder into the host's own `$DSH_HOME/skills/<id>/SKILL.md`. DSH keeps ownership of matching, loading, and `/name` |
-| **Rewind** | Composer "Undo once" / "Undo last round" and `/rewind`, built on the official `session.fork({ atSeq })` |
 | **Self-check on start** | After `npm`/`pnpm` rewrites `node_modules`, the plugin notices and re-applies instead of asking you to hand-edit files |
 | **Drill console** | A separate page for assets, skills, and environment checks. Gated behind a notice + countdown + three checkboxes. Only for hosts you manage or offline/authorized targets |
 
@@ -216,7 +215,6 @@ From a terminal instead of chat: `dsh-purge --status`, `--apply`, `--revert`, `-
 /purge  status | apply | revert | uninstall | edit | help
 /rules  list | use <id> | create <id> | delete <id> | reset | help
 /skills list | import <zip-or-folder> | create <id> [description] | delete <id> | help
-/rewind
 ```
 
 ### CLI
@@ -421,7 +419,6 @@ dsh-purge/
 │   ├── rules.js            rule sets, workspace policy
 │   ├── skills.js           skill import
 │   ├── net-scope.js        own-servers whitelist
-│   ├── rewind.js           session fork / undo
 │   ├── update.js           self-update from this repo
 │   ├── redteam/            drill console (store, tools, ui, presets)
 │   └── …
@@ -438,7 +435,6 @@ dsh-purge/
 ## Development
 
 ```sh
-# unit tests: patch idempotency / rewind restore / clean every host
 npm test
 
 # syntax check every entry

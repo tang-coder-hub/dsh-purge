@@ -59,7 +59,6 @@
 | **工作区策略** | `strict` / `fallback` / `always`——决定宿主自带的 workspace 基线段要不要跟你的提示词一起保留 |
 | **自有服务器** | 一份白名单（`$DSH_HOME/net-scope-allow.txt`），逐条登记**精确 IP / 主机名**。没登记的仍然在范围外 |
 | **技能** | zip 或文件夹导入到宿主自己的 `$DSH_HOME/skills/<id>/SKILL.md`。匹配、加载、`/名字` 仍归 DSH 管 |
-| **回退一轮** | 输入框的"撤销一次" / "撤销上一轮" 和 `/rewind`，走官方 `session.fork({ atSeq })` |
 | **启动自检** | `npm` / `pnpm` 把 `node_modules` 重写掉之后，插件会发现并重新打补丁，不用你手改文件 |
 | **演练台** | 资产、技能、环境检查独立一页。要过提示 + 倒计时 + 三个勾选才解锁；只用于你管的机器或离线 / 授权靶标 |
 
@@ -216,7 +215,6 @@ Web 面板只作用于 Web，桌面面板只作用于桌面。别在一个宿主
 /purge  status | apply | revert | uninstall | edit | help
 /rules  list | use <id> | create <id> | delete <id> | reset | help
 /skills list | import <zip-or-folder> | create <id> [description] | delete <id> | help
-/rewind
 ```
 
 ### 命令行
@@ -421,7 +419,6 @@ dsh-purge/
 │   ├── rules.js            规则集、工作区策略
 │   ├── skills.js           技能导入
 │   ├── net-scope.js        自有服务器白名单
-│   ├── rewind.js           会话 fork / 撤销
 │   ├── update.js           从本仓库自更新
 │   ├── redteam/            演练台（store、tools、ui、presets）
 │   └── …
@@ -438,7 +435,6 @@ dsh-purge/
 ## 开发
 
 ```sh
-# 单元测试：patch 幂等 / rewind 还原 / 清洗全部宿主
 npm test
 
 # 逐个入口做语法检查

@@ -433,15 +433,6 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"metric.sealed.count": "待解开",
 			"metric.lost": "补丁已丢失，请重新应用",
 			"metric.lost.count": "已丢失",
-			"rewind.label": "回退",
-			"rewind.aria": "回退",
-			"rewind.busy": "回退中…",
-			"rewind.empty": "没有可回退的上一句",
-			"rewind.fail": "回退失败: {error}",
-			"rewind.once": "本轮",
-			"rewind.once.hint": "把这一轮发出去的那句放回输入框，并清掉这一轮",
-			"rewind.round": "上一轮",
-			"rewind.round.hint": "把这一轮发出去的那句放回输入框；子代理也只撤这一轮",
 			"hooksDeny.title": "Hooks 拦截",
 			"hooksDeny.bypass": "放行 hooks 的 deny / ask（补丁 30 / 31 / 64 / 65）",
 			"hooksDeny.hint": "关掉后，用户自己的 PreToolUse / UserPromptSubmit / Stop hook 的 deny 会按官方逻辑生效。官方 ask 分支本身是空操作，关开关不会弹出审批框。改完后点「应用」并重启才写进宿主。",
@@ -770,15 +761,6 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 			"metric.lost.count": "Lost",
 			"status.unlocated": "Not located",
 			"metric.unlocated": "This install was not found yet",
-			"rewind.label": "Undo",
-			"rewind.aria": "Undo",
-			"rewind.busy": "Undoing…",
-			"rewind.empty": "Nothing to undo",
-			"rewind.fail": "Undo failed: {error}",
-			"rewind.once": "This round",
-			"rewind.once.hint": "Put this round's message back in the box and drop only this round",
-			"rewind.round": "Last round",
-			"rewind.round.hint": "Put this round's message back in the box; subagents drop only this round",
 			"hooksDeny.title": "Hook interception",
 			"hooksDeny.bypass": "Bypass hook deny / ask (patches 30 / 31 / 64 / 65)",
 			"hooksDeny.hint": "When off, your own PreToolUse / UserPromptSubmit / Stop hook deny runs as the official host wrote it. The official ask branch is a no-op; turning this off will not show an approval dialog. Click Apply and restart to write the host files.",
@@ -904,8 +886,6 @@ window.__ModuleLoader__.load({ id: "dsh-purge", factory: (require) => {
 .dshp-cr-text{flex:1;min-width:0}
 .dshp-continue{border-top:1px solid var(--dshp-line);margin-top:12px}
 .dshp-continue-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
-.dshp-rewind{border-top:1px solid var(--dshp-line);margin-top:12px}
-.dshp-rewind-wrap{position:relative;display:inline-flex}
 .dshp-notice{display:block;margin-top:8px;min-height:16px;font-size:11.5px}
 @media (max-width:560px){.dshp-edition{grid-template-columns:96px 1fr;grid-template-areas:"name sel" "name btn"}.dshp-edition-name{grid-area:name}.dshp-edition .dshp-ver{grid-area:sel}.dshp-edition .dshp-btn{grid-area:btn}.dshp-metrics{flex-direction:column}.dshp-metric+.dshp-metric{border-left:0;border-top:1px solid var(--dshp-line)}}
 .dshp-area{min-height:200px;resize:vertical}
@@ -2882,41 +2862,19 @@ body:not([data-ds-dark-theme]) .dshp-auth-ops button.primary{background:var(--ds
 			);
 		}
 
-		const REWIND_CSS = `
-.dshp-rewind-wrap{position:relative;display:inline-flex}
-.dshp-rewind{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;width:28px;height:28px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--dsw-alias-label-secondary,currentColor);cursor:pointer}
-.dshp-rewind:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
-.dshp-rewind:disabled{opacity:.4;cursor:default}
-.dshp-rewind[aria-expanded=true]{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12));color:var(--dsw-alias-label-primary,currentColor)}
-.dshp-rewind svg{display:block}
-.dshp-rewind-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:2147483000;box-sizing:border-box;width:300px;max-width:calc(100vw - 16px);padding:6px;border:1px solid var(--dsw-alias-border-l1,rgba(0,0,0,.10));border-radius:14px;background:var(--dsw-specific-menu,#fff);background-color:var(--dsw-specific-menu,#fff);color:var(--dsw-alias-label-primary,#1a1a1a);box-shadow:var(--dsw-elevation-prominent,0 12px 32px rgba(0,0,0,.16))}
-body[data-ds-dark-theme] .dshp-rewind-menu{background:var(--dsw-specific-menu,#32312d);background-color:var(--dsw-specific-menu,#32312d);color:var(--dsw-alias-label-primary,#e6e2db);border-color:var(--dsw-alias-border-l1,#3f3d38);box-shadow:var(--dsw-elevation-prominent,0 12px 36px rgba(0,0,0,.5))}
-.dshp-rewind-menuHead{display:flex;align-items:center;gap:6px;padding:2px 8px 6px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;font-weight:500;line-height:16px}
-.dshp-rewind-item{display:flex;flex-direction:column;gap:1px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:inherit;text-align:left;cursor:pointer;font:12px/1.3 var(--ds-font-sans,system-ui,sans-serif)}
-.dshp-rewind-item + .dshp-rewind-item{border-top:1px solid var(--dsw-alias-border-l2,rgba(0,0,0,.06))}
-.dshp-rewind-item:hover{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12))}
-.dshp-rewind-inline{display:inline-flex;align-items:center;margin-left:2px}
-.dshp-rewind-itemTitle{display:flex;align-items:center;gap:9px;color:var(--dsw-alias-label-primary,inherit);font-size:13px;font-weight:600;line-height:22px}
-.dshp-rewind-glyph{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--dsw-alias-fill-l1,rgba(127,127,127,.10));color:var(--dsw-alias-label-secondary,inherit);transition:background .12s,color .12s}
-.dshp-rewind-item:hover .dshp-rewind-glyph{background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.16));color:var(--dsw-alias-label-primary,inherit)}
-.dshp-rewind-glyph svg{display:block;opacity:1}
-.dshp-rewind-itemHint{margin-left:33px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
-body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-tertiary,#a8a39a)}
-.dshp-rewind-menuFoot{padding:6px 8px 2px;color:var(--dsw-alias-label-tertiary,#9a958c);font-size:11px;line-height:16px}
-.dshp-rewind-menuFoot kbd{font:inherit;opacity:.8}`;
-		const DRAFT_KEY = "dshp-rewind-draft:";
-		const ARM_KEY = "dshp-rewind-arm:";
+		const DRAFT_KEY = "dshp-draft:";
+		const ARM_KEY = "dshp-arm:";
 		const FILL_DELAYS = [0, 50, 180, 400, 800];
 		const ARM_TTL_MS = 45 * 1000;
-		let rewindSeenAt = 0;
-		let rewindSessions = null;
-		let rewindHost = null;
-		let rewindWorkspace = null;
-		let rewindConversation = null;
+		let composerSeenAt = 0;
+		let sessionStore = null;
+		let hostFace = null;
+		let workspaceFace = null;
+		let conversationHost = null;
 		let pendingComposer = { sessionId: "", text: "", at: 0 };
 		let armedFill = { sessionId: "", text: "", at: 0 };
 
-		function rewindText(t, key, fallback) {
+		function i18nText(t, key, fallback) {
 			try {
 				if (typeof t === "function") {
 					const value = t(key);
@@ -2928,7 +2886,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 
 		function currentSessionId(sessions) {
 			try {
-				const selected = rewindWorkspace?.selection?.getSnapshot?.()?.sessionId;
+				const selected = workspaceFace?.selection?.getSnapshot?.()?.sessionId;
 				if (typeof selected === "string" && selected) return selected;
 			} catch { /* ignore */ }
 			try {
@@ -3009,8 +2967,8 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 		}
 
 		function conversationFace() {
-			if (rewindConversation) return rewindConversation;
-			const host = rewindHost;
+			if (conversationHost) return conversationHost;
+			const host = hostFace;
 			if (host?.conversation) return host.conversation;
 			if (typeof host?.get === "function") {
 				try { return host.get("conversation"); } catch { return undefined; }
@@ -3025,7 +2983,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 				if (typeof input.shell === "function") {
 					try { return input.shell(sessionId); } catch { /* session not retained yet */ }
 				}
-				const sessions = rewindHost?.sessions || rewindSessions;
+				const sessions = hostFace?.sessions || sessionStore;
 				const actx = typeof sessions?.scope === "function" ? sessions.scope(sessionId) : undefined;
 				if (typeof input.for === "function" && actx) return input.for(actx);
 				return null;
@@ -3091,37 +3049,6 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 			};
 		}
 
-		function scheduleEchoClear(sessionId, inputActions) {
-			if (!sessionId) return () => {};
-			let last = "";
-			let stopped = false;
-			const timers = [];
-			const tryClear = () => {
-				if (stopped || !last) return;
-				const current = String(liveDraft(sessionId, inputActions) || "").trim();
-				if (!current) {
-					stopped = true;
-					return;
-				}
-				if (current !== last) return;
-				fillComposer(inputActions, "");
-				hostSetDraft(sessionId, "");
-				clearStoredDraft(sessionId);
-				stopped = true;
-			};
-			apiJson("/dsh-purge/last-user?sessionId=" + encodeURIComponent(sessionId)).then((data) => {
-				if (stopped) return;
-				last = String(data?.text || "").trim();
-				if (!last || isPluginDraft(last)) return;
-				tryClear();
-				for (const ms of [0, 50, 180, 400]) timers.push(window.setTimeout(tryClear, ms));
-			}).catch(() => {});
-			return () => {
-				stopped = true;
-				for (const t of timers) { try { window.clearTimeout(t); } catch { /* ignore */ } }
-			};
-		}
-
 		async function dropInheritedQueue(sessions, sessionId) {
 			if (!sessions || !sessionId) return;
 			const drop = async () => {
@@ -3142,7 +3069,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 
 		async function openRewoundSession(sessions, sessionId) {
 			if (!sessionId) return;
-			const workspace = rewindWorkspace;
+			const workspace = workspaceFace;
 			let lastError = null;
 			for (let attempt = 0; attempt < 25; attempt += 1) {
 				if (sessions && typeof sessions.refresh === "function" && !sessionKnown(sessions, sessionId)) {
@@ -3173,16 +3100,6 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 			throw new Error((lastError && lastError.message) || "回退后的会话没有打开");
 		}
 
-		class RewindSafe extends Component {
-			constructor(p) { super(p); this.state = { failed: false }; }
-			static getDerivedStateFromError() { return { failed: true }; }
-			componentDidCatch(error) { try { console.error("[dsh-purge] rewind slot:", error); } catch { /* ignore */ } }
-			render() {
-				if (this.state.failed) return h(RewindFallback, this.props);
-				return h(RewindButton, this.props);
-			}
-		}
-
 		class ContinueSafe extends Component {
 			constructor(p) { super(p); this.state = { failed: false }; }
 			static getDerivedStateFromError() { return { failed: true }; }
@@ -3192,10 +3109,10 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					return h("button", {
 						type: "button",
 						className: "dshp-continue",
-						title: rewindText(translate, "continue.label", "继续"),
+						title: i18nText(translate, "continue.label", "继续"),
 						onMouseDown: (e) => e.preventDefault(),
 						onClick: async () => {
-							const sessionId = currentSessionId(rewindSessions);
+							const sessionId = currentSessionId(sessionStore);
 							if (!sessionId) return;
 							try {
 								const data = await apiJson("/dsh-purge/continue", {
@@ -3205,10 +3122,10 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 								});
 								if (!data || !data.ok) throw new Error((data && data.error) || "continue");
 							} catch (e) {
-								window.alert(rewindText(translate, "continue.fail", "继续失败: {error}").replace("{error}", String((e && e.message) || e)));
+								window.alert(i18nText(translate, "continue.fail", "继续失败: {error}").replace("{error}", String((e && e.message) || e)));
 							}
 						},
-					}, rewindText(translate, "continue.label", "继续"));
+					}, i18nText(translate, "continue.label", "继续"));
 				}
 				return h(ContinueButton, this.props);
 			}
@@ -3216,7 +3133,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 
 		function ContinueButton(props) {
 			const t = props.t || translate;
-			const sessions = rewindSessions;
+			const sessions = sessionStore;
 			const sessionId = props.sessionId || currentSessionId(sessions);
 			const [busy, setBusy] = useState(false);
 			const [notice, setNotice] = useState("");
@@ -3256,26 +3173,26 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 					if (!data || !data.ok) throw new Error((data && data.error) || "continue");
 					setInfo((prev) => prev ? { ...prev, ...data, canContinue: false, continueUsed: data.used } : data);
 				} catch (e) {
-					setNotice(rewindText(t, "continue.fail", "继续失败: {error}").replace("{error}", String((e && e.message) || e)));
+					setNotice(i18nText(t, "continue.fail", "继续失败: {error}").replace("{error}", String((e && e.message) || e)));
 				} finally {
 					setBusy(false);
 				}
 			};
 
 			const label = busy
-				? rewindText(t, "continue.busy", "继续中…")
-				: rewindText(t, "continue.label", "继续");
+				? i18nText(t, "continue.busy", "继续中…")
+				: i18nText(t, "continue.label", "继续");
 			const title = notice
 				|| (canContinue
-					? rewindText(t, "continue.ready", "继续（还可 {left} 次）").replace("{left}", String(left))
+					? i18nText(t, "continue.ready", "继续（还可 {left} 次）").replace("{left}", String(left))
 					: (info && info.reason && left <= 0
-						? rewindText(t, "continue.limit", "已达继续上限")
-						: rewindText(t, "continue.aria", "异常停止后继续")));
+						? i18nText(t, "continue.limit", "已达继续上限")
+						: i18nText(t, "continue.aria", "异常停止后继续")));
 			return h("button", {
 				type: "button",
 				className: "dshp-continue" + (canContinue ? " is-ready" : ""),
 				title,
-				"aria-label": rewindText(t, "continue.aria", "异常停止后继续"),
+				"aria-label": i18nText(t, "continue.aria", "异常停止后继续"),
 				disabled: busy || !sessionId || !canContinue,
 				onMouseDown: (e) => e.preventDefault(),
 				onClick: (e) => {
@@ -3289,246 +3206,6 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 				),
 				label,
 			);
-		}
-
-		function rewindMenuNode(t, menuRef, runRewind) {
-			const menu = h("div", {
-				className: "dshp-rewind-menu",
-				role: "menu",
-				ref: menuRef,
-			},
-				h("div", { className: "dshp-rewind-menuHead" },
-					h("svg", { viewBox: "0 0 16 16", width: "13", height: "13", "aria-hidden": true },
-						h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" })),
-					"回退"
-				),
-				h("button", {
-					type: "button",
-					className: "dshp-rewind-item",
-					onMouseDown: (e) => { e.preventDefault(); e.stopPropagation(); },
-					onClick: (e) => { e.preventDefault(); e.stopPropagation(); runRewind("once"); },
-				},
-					h("span", { className: "dshp-rewind-itemTitle" },
-						h("span", { className: "dshp-rewind-glyph" },
-							h("svg", { viewBox: "0 0 16 16", width: "15", height: "15", "aria-hidden": true },
-								h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" }))),
-						rewindText(t, "rewind.once", "本轮")
-					),
-					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.once.hint", "把这一轮发出去的那句放回输入框，并清掉这一轮"))
-				),
-				h("button", {
-					type: "button",
-					className: "dshp-rewind-item",
-					onMouseDown: (e) => { e.preventDefault(); e.stopPropagation(); },
-					onClick: (e) => { e.preventDefault(); e.stopPropagation(); runRewind("round"); },
-				},
-					h("span", { className: "dshp-rewind-itemTitle" },
-						h("span", { className: "dshp-rewind-glyph" },
-							h("svg", { viewBox: "0 0 16 16", width: "15", height: "15", "aria-hidden": true },
-								h("path", { fill: "currentColor", d: "M6.4 2.2 1.8 8l4.6 5.8 1.4-1.1L3.9 8l3.9-4.7z" }),
-								h("path", { fill: "currentColor", d: "M12.4 2.2 7.8 8l4.6 5.8 1.4-1.1L9.9 8l3.9-4.7z" }))),
-						rewindText(t, "rewind.round", "上一轮")
-					),
-					h("span", { className: "dshp-rewind-itemHint" }, rewindText(t, "rewind.round.hint", "把这一轮发出去的那句放回输入框；子代理也只撤这一轮"))
-				),
-				h("div", { className: "dshp-rewind-menuFoot" }, "v1.3.16 · Esc 或点外部关闭")
-			);
-			return menu;
-		}
-
-		class RewindFallback extends Component {
-			constructor(p) {
-				super(p);
-				this.state = { menu: false, busy: false, notice: "" };
-				this.wrap = null;
-				this.menuEl = null;
-				this.onDoc = (event) => {
-					if (this.wrap && this.wrap.contains(event.target)) return;
-					if (this.menuEl && this.menuEl.contains(event.target)) return;
-					this.setState({ menu: false });
-				};
-			}
-			componentDidMount() {
-				document.addEventListener("mousedown", this.onDoc);
-			}
-			componentWillUnmount() {
-				document.removeEventListener("mousedown", this.onDoc);
-			}
-			run(mode) {
-				const sessionId = this.props.sessionId || currentSessionId(rewindSessions);
-				if (!sessionId || this.state.busy) return;
-				this.setState({ busy: true, menu: false, notice: "" });
-				apiJson("/dsh-purge/rewind", {
-					method: "POST",
-					headers: { "content-type": "application/json" },
-					body: JSON.stringify({ sessionId, mode }),
-				}).then(async (data) => {
-					if (!data || !data.ok || !data.sessionId || data.cleared === false) {
-						throw new Error((data && data.error) || "没有清掉之前发送的内容");
-					}
-					if (data.at) rewindSeenAt = data.at;
-					const text = isPluginDraft(data.text) ? "" : (data.text || "");
-					armComposerFill(data.sessionId, text);
-					await openRewoundSession(rewindSessions, data.sessionId);
-					scheduleComposerFill(data.sessionId, text);
-					this.setState({ busy: false });
-				}).catch((e) => {
-					this.setState({
-						busy: false,
-						notice: "回退失败: " + String((e && e.message) || e),
-					});
-				});
-			}
-			openMenu() {
-				this.setState({ menu: !this.state.menu, notice: "" });
-			}
-			render() {
-				const sessionId = this.props.sessionId || currentSessionId(rewindSessions);
-				const t = this.props.t || translate;
-				const label = this.state.busy ? "回退中…" : (this.state.notice ? this.state.notice.slice(0, 18) : "回退");
-				return h("div", { className: "dshp-rewind-wrap", ref: (node) => { this.wrap = node; } },
-					h("style", null, REWIND_CSS),
-					h("button", {
-						type: "button",
-						className: "dshp-rewind",
-						disabled: this.state.busy || !sessionId,
-						onMouseDown: (e) => e.preventDefault(),
-						onClick: (e) => { e.preventDefault(); this.openMenu(); },
-					},
-						h("svg", { viewBox: "0 0 16 16", width: "15", height: "15", "aria-hidden": true },
-							h("path", { fill: "currentColor", d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z" }))),
-					this.state.menu ? rewindMenuNode(t, (node) => { this.menuEl = node; }, (mode) => this.run(mode)) : null,
-				);
-			}
-		}
-
-		function RewindButton(props) {
-			const t = props.t || translate;
-			const sessions = rewindSessions;
-			const inputActions = props.inputActions;
-			const sessionId = props.sessionId || currentSessionId(sessions);
-			const wrapRef = useRef(null);
-			const menuRef = useRef(null);
-			const [busy, setBusy] = useState(false);
-			const [notice, setNotice] = useState("");
-			const [menu, setMenu] = useState(false);
-
-			useEffect(() => {
-				if (!sessionId) return;
-				const armed = takeArmedFill(sessionId);
-				if (armed) {
-					scheduleComposerFill(sessionId, armed, inputActions);
-					return;
-				}
-				scheduleEchoClear(sessionId, inputActions);
-			}, [sessionId, inputActions]);
-
-			useEffect(() => {
-				if (!menu) return;
-				const onKey = (event) => {
-					if (event.key === "Escape") setMenu(false);
-				};
-				const onDoc = (event) => {
-					if (wrapRef.current && wrapRef.current.contains(event.target)) return;
-					if (menuRef.current && menuRef.current.contains(event.target)) return;
-					setMenu(false);
-				};
-				document.addEventListener("mousedown", onDoc);
-				document.addEventListener("keydown", onKey);
-				return () => {
-					document.removeEventListener("mousedown", onDoc);
-					document.removeEventListener("keydown", onKey);
-				};
-			}, [menu]);
-
-			const runRewind = async (mode) => {
-				if (!sessionId || busy) return;
-				setBusy(true);
-				setMenu(false);
-				setNotice("");
-				try {
-					const data = await apiJson("/dsh-purge/rewind", {
-						method: "POST",
-						headers: { "content-type": "application/json" },
-						body: JSON.stringify({ sessionId, mode }),
-					});
-					if (!data || !data.ok || !data.sessionId || data.cleared === false) {
-						throw new Error((data && data.error) || "没有清掉之前发送的内容");
-					}
-					if (data.at) rewindSeenAt = data.at;
-					const text = isPluginDraft(data.text) ? "" : (data.text || "");
-					armComposerFill(data.sessionId, text);
-					await openRewoundSession(sessions, data.sessionId);
-					scheduleComposerFill(data.sessionId, text);
-				} catch (e) {
-					const message = rewindText(t, "rewind.fail", "回退失败: {error}").replace("{error}", String((e && e.message) || e));
-					setNotice(message);
-				} finally {
-					setBusy(false);
-				}
-			};
-
-			const onClick = (event) => {
-				event?.preventDefault?.();
-				event?.stopPropagation?.();
-				if (!sessionId || busy) return;
-				if (menu) {
-					setMenu(false);
-					return;
-				}
-				setNotice("");
-				setMenu(true);
-			};
-
-			const failLabel = notice
-				? (notice.length > 18 ? notice.slice(0, 18) + "…" : notice)
-				: "";
-			const label = busy
-				? rewindText(t, "rewind.busy", "回退中…")
-				: (failLabel || rewindText(t, "rewind.label", "回退"));
-			const title = notice || rewindText(t, "rewind.aria", "回退");
-			return h("div", { className: "dshp-rewind-wrap", ref: wrapRef },
-				h("style", null, REWIND_CSS),
-				h("button", {
-					type: "button",
-					className: "dshp-rewind" + (menu ? " on" : ""),
-					title,
-					"aria-label": rewindText(t, "rewind.aria", "回退"),
-					"aria-expanded": menu ? "true" : "false",
-					disabled: busy || !sessionId,
-					onMouseDown: (e) => e.preventDefault(),
-					onClick,
-				},
-					h("svg", { viewBox: "0 0 16 16", width: "14", height: "14", "aria-hidden": true },
-						h("path", {
-							fill: "currentColor",
-							d: "M7.2 3.2 3.4 7l3.8 3.8V8.6c2.8 0 4.7.7 5.9 2.3-.2-2.8-1.9-5.2-5.9-5.6V3.2z",
-						}),
-					),
-				),
-				menu ? rewindMenuNode(t, menuRef, runRewind) : null,
-			);
-		}
-
-		function installRewindWatch(ctx) {
-			const sessions = ctx.sessions;
-			if (!sessions) return () => {};
-			const tick = async () => {
-				try {
-					const data = await apiJson("/dsh-purge/rewind");
-					if (!data || !data.sessionId || !data.at || data.at <= rewindSeenAt) return;
-					rewindSeenAt = data.at;
-					const current = currentSessionId(sessions);
-					if (current && current !== data.parentId) return;
-					const text = isPluginDraft(data.text) ? "" : (data.text || "");
-					armComposerFill(data.sessionId, text);
-					scheduleComposerFill(data.sessionId, text);
-					await openRewoundSession(sessions, data.sessionId);
-					scheduleComposerFill(data.sessionId, text);
-				} catch { /* ignore */ }
-			};
-			const timer = window.setInterval(tick, 1200);
-			return () => window.clearInterval(timer);
 		}
 
 		/* __DSH_PURGE_DRILL_BEGIN__ */
@@ -8067,7 +7744,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 
 		function clientCurrentCwd() {
 			try {
-				const sessions = rewindSessions || (rewindHost && rewindHost.sessions);
+				const sessions = sessionStore || (hostFace && hostFace.sessions);
 				if (!sessions) return "";
 				const sid = currentSessionId(sessions);
 				if (!sid) return "";
@@ -8090,7 +7767,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 
 		function isRedteamModeActive() {
 			try {
-				const sessions = rewindSessions || (rewindHost && rewindHost.sessions);
+				const sessions = sessionStore || (hostFace && hostFace.sessions);
 				const sid = currentSessionId(sessions);
 				if (sid && sessions) {
 					try {
@@ -8249,7 +7926,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 				};
 				const tick = () => {
 					try {
-						const sessions = rewindSessions || (rewindHost && rewindHost.sessions);
+						const sessions = sessionStore || (hostFace && hostFace.sessions);
 						const sid = currentSessionId(sessions);
 						if (!sid) return;
 						patchShell(conversationInput(sid));
@@ -8645,54 +8322,6 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 		/** 把回退图标挂到最后一条用户消息的操作行（复制按钮旁边）。
 		 *  宿主没有为用户消息开放 actions 槽位，只能按语义找 DOM 再 portal。
 		 *  只挂最后一条：回退本来就是“回退最近一轮”。 */
-		function RewindInMessageActions() {
-			const [host, setHost] = useState(null);
-			useEffect(() => {
-				let dead = false;
-				const ensure = () => {
-					if (dead) return;
-					try {
-						const rows = document.querySelectorAll('[data-chat-flow-kind="user"]');
-						const last = rows.length ? rows[rows.length - 1] : null;
-						if (!last) { setHost((p) => (p === null ? p : null)); return; }
-						let target = null;
-						for (const b of last.querySelectorAll("button")) {
-							const label = [b.getAttribute("aria-label"), b.getAttribute("title"), b.textContent].filter(Boolean).join(" ");
-							if (/复制|Copy/i.test(label)) { target = b.parentElement; break; }
-						}
-						if (!target) target = last.querySelector('[class*="actions"]');
-						if (!target) return;
-						let el = target.querySelector(":scope > .dshp-rewind-inline");
-						if (!el) {
-							el = document.createElement("span");
-							el.className = "dshp-rewind-inline";
-							target.appendChild(el);
-						}
-						setHost((prev) => (prev === el ? prev : el));
-					} catch { /* ignore */ }
-				};
-				ensure();
-				const obs = typeof MutationObserver !== "undefined" ? new MutationObserver(() => ensure()) : null;
-				if (obs) obs.observe(document.body, { childList: true, subtree: true });
-				const iv = setInterval(ensure, 1200);
-				return () => { dead = true; if (obs) obs.disconnect(); clearInterval(iv); };
-			}, []);
-			if (!host) return null;
-			try {
-				const rd = require("react-dom");
-				if (rd && typeof rd.createPortal === "function") return rd.createPortal(h(RewindSafe, { t: translate }), host);
-			} catch { /* 没有 portal 就不挂 */ }
-			return null;
-		}
-
-		function installRewindUi(ctx) {
-			rewindHost = ctx;
-			rewindSessions = ctx.sessions;
-			rewindWorkspace = ctx.uiWorkspace || null;
-			rewindConversation = ctx.conversation || null;
-			ctx.effect(() => installRewindWatch(ctx), "dsh-purge: rewind watch");
-		}
-
 		function apply(ctx) {
 			ctx.effect(() => ctx.locale.register(NS, { zh, en }), "dsh-purge: dictionaries");
 			const t = ctx.locale.bind(NS);
@@ -8701,22 +8330,7 @@ body[data-ds-dark-theme] .dshp-rewind-itemHint{color:var(--dsw-alias-label-terti
 				name: "shell.overlay",
 				id: "dsh-purge-dock",
 				order: 50,
-			}, () => h(react.Fragment, null, h(WelcomeNotice), h(PurgeDock), h(TabRowPurgeMount), h(EnvAdaptSendGate), h(RewindInMessageActions))));
-			try {
-				if (typeof ctx.inject === "function") {
-					ctx.inject(["sessions", "uiWorkspace", "workspaces", "conversation"], (host) => installRewindUi(host));
-				} else if (ctx.sessions) {
-					installRewindUi(ctx);
-				}
-			} catch (e) {
-				try {
-					if (typeof ctx.inject === "function") {
-						ctx.inject(["sessions", "uiWorkspace", "conversation"], (host) => installRewindUi(host));
-					}
-				} catch (e2) {
-					try { console.warn("[dsh-purge] rewind ui skipped:", e2 || e); } catch { /* ignore */ }
-				}
-			}
+			}, () => h(react.Fragment, null, h(WelcomeNotice), h(PurgeDock), h(TabRowPurgeMount), h(EnvAdaptSendGate))));
 		}
 
 		exports.name = name;

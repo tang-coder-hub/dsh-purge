@@ -1,3 +1,27 @@
+# 1.4.0
+
+## 中文
+
+- 版本 **1.4.0**。**移除回退（rewind）功能**，整块交出去。作者决定改用插件市场里独立的回退插件，这里不再自带。
+- 删掉的东西：
+  - `lib/rewind.js`（645 行）—— 回退规划、会话 fork 包装、草稿传递
+  - `lib/index.js` 里的 3 条 HTTP 路由（`/dsh-purge/rewind`、`/dsh-purge/rewind/options`、`/dsh-purge/last-user`）、`/rewind` 命令、`installRewindDeriveFilter`
+  - `client.js` 里的整套 UI（约 446 行）：`REWIND_CSS`、`rewindMenuNode`、`RewindSafe` / `RewindFallback` / `RewindButton`、`installRewindUi` / `installRewindWatch`、消息行内挂载器，以及只服务于它的 `scheduleEchoClear` 与相关 locale 键
+- **保留的**：`lib/core.js` 里那些给宿主打的回退行为补丁（#56 / #58 / #68 / #75 / #77）—— 它们保证宿主能正确渲染 `rewind-` 标记、不把回退内容送进模型请求、回退后 todo 状态正确。**这些是宿主侧能力，不是本插件 UI**，删了反而会让独立回退插件行为异常。
+- 测试从 73 条降到 64 条；`test/rewind-restore.test.js` 中纯宿主文件回滚那部分保留并改名为 `test/bak-restore.test.js`（9 条全过）。
+- README 中英双语的目录树、命令表、测试说明里已同步去掉回退条目。
+
+## English
+
+- Version **1.4.0**. **The rewind feature is removed** and handed off. The author is switching to a standalone rewind plugin from the marketplace, so this bundle no longer ships one.
+- Removed:
+  - `lib/rewind.js` (645 lines) — rewind planning, session-fork wrapping, draft handoff
+  - In `lib/index.js`: three HTTP routes (`/dsh-purge/rewind`, `/dsh-purge/rewind/options`, `/dsh-purge/last-user`), the `/rewind` command, and `installRewindDeriveFilter`
+  - In `client.js`: the whole UI (~446 lines) — `REWIND_CSS`, `rewindMenuNode`, `RewindSafe` / `RewindFallback` / `RewindButton`, `installRewindUi` / `installRewindWatch`, the in-message mount, plus `scheduleEchoClear` and the locale keys that only served it
+- **Kept**: the host-side rewind behaviour patches in `lib/core.js` (#56 / #58 / #68 / #75 / #77). They make the host render `rewind-` markers correctly, keep rewind content out of model requests, and reset todos after a rewind. **That is host capability, not this plugin's UI** — removing them would break the standalone rewind plugin.
+- Tests drop from 73 to 64; the host-file rollback half of `test/rewind-restore.test.js` is kept and renamed to `test/bak-restore.test.js` (9 cases, all passing).
+- The English and Chinese READMEs no longer mention rewind in the tree, command list, or test description.
+
 # 1.3.16
 
 ## 中文
